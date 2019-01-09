@@ -1,0 +1,58 @@
+package org.drulabs.domain.usecases;
+
+import org.drulabs.domain.repository.RecipeRepository;
+import org.drulabs.domain.utils.TestFactory;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import io.reactivex.Completable;
+import io.reactivex.observers.TestObserver;
+import io.reactivex.schedulers.Schedulers;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+@RunWith(JUnit4.class)
+public class SaveRecipeTest {
+
+    private SaveRecipe saveRecipe;
+    @Mock
+    private RecipeRepository repository;
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        saveRecipe = new SaveRecipe(repository, Schedulers.trampoline(), Schedulers.trampoline());
+    }
+
+    @Test
+    public void testProjectSavedUseCase() {
+        when(repository.saveRecipe(any())).thenReturn(Completable.complete());
+        TestObserver observer = saveRecipe.run(TestFactory.getRecipe()).test();
+        observer.assertComplete();
+    }
+
+    @Test
+    public void testListJoin() {
+        List<String> ingre = new ArrayList<>();
+        ingre.add("A");
+        ingre.add("B");
+        ingre.add("C");
+        ingre.add("D");
+
+        String j = ingre.toString().replace(", ", ",").replaceAll("[\\[.\\]]", "");
+
+        assertEquals(j, "A,B,C,D");
+    }
+
+}

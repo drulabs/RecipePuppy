@@ -1,0 +1,13 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "io.reactivex.rxjava2:rxjava:2.1.6"
+    implementation "junit:junit:4.12"
+    implementation "org.mockito:mockito-core:2.19.0"
+    implementation "javax.inject:javax.inject:1"
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
