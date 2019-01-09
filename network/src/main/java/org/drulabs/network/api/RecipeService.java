@@ -1,6 +1,6 @@
 package org.drulabs.network.api;
 
-import org.drulabs.network.entities.NetworkRecipe;
+import org.drulabs.network.entities.NetworkRecipeResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -11,6 +11,6 @@ public interface RecipeService {
     String BASE_URL = "http://www.recipepuppy.com/";
 
     @GET("api")
-    Observable<NetworkRecipe> fetchRecipes(@Query("i") String ingredients, @Query("q") String
-            searchQuery, @Query("p") int pageNum);
+    Observable<NetworkRecipeResponse> fetchRecipes(@Query("i") String ingredients, @Query("q")
+            String searchQuery, @Query("p") int pageNum);
 }

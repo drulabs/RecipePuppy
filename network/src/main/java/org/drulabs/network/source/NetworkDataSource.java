@@ -23,6 +23,7 @@ public class NetworkDataSource implements RemoteDataSource {
     @Override
     public Observable<DataRecipe> getRecipes(String searchQuery, int pageNum) {
         return service.fetchRecipes("", searchQuery, pageNum)
+                .flatMap(networkRes -> Observable.fromIterable(networkRes.getRecipes()))
                 .map(networkRecipe -> mapper.mapTo(networkRecipe));
     }
 }
