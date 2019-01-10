@@ -2,6 +2,8 @@ package org.drulabs.domain.repository;
 
 import org.drulabs.domain.entities.DomainRecipe;
 
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;

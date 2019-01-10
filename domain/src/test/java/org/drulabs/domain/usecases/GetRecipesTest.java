@@ -11,11 +11,12 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,6 +43,10 @@ public class GetRecipesTest {
         DomainRecipe domainRecipe1 = TestFactory.getRecipe();
         DomainRecipe domainRecipe2 = TestFactory.getRecipe();
         DomainRecipe domainRecipe3 = TestFactory.getRecipe();
+//        List<DomainRecipe> domainRecipes = new ArrayList<>();
+//        domainRecipes.add(domainRecipe1);
+//        domainRecipes.add(domainRecipe2);
+//        domainRecipes.add(domainRecipe3);
 
         when(repository.getRecipes(recipeRequest.getSearchQuery(), recipeRequest.getPageNum()))
                 .thenReturn(Observable.just(domainRecipe1, domainRecipe2, domainRecipe3));
