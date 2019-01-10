@@ -1,6 +1,6 @@
 package org.drulabs.data.utils;
 
-import org.drulabs.data.entity.DataRecipe;
+import org.drulabs.data.entities.DataRecipe;
 
 import java.util.Arrays;
 import java.util.List;

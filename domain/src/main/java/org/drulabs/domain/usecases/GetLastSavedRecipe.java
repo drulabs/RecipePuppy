@@ -1,6 +1,6 @@
 package org.drulabs.domain.usecases;
 
-import org.drulabs.domain.entities.Recipe;
+import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.repository.RecipeRepository;
 import org.drulabs.domain.usecases.base.SingleUseCase;
 
@@ -10,7 +10,7 @@ import javax.inject.Named;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 
-public class GetLastSavedRecipe extends SingleUseCase<Recipe, Void> {
+public class GetLastSavedRecipe extends SingleUseCase<DomainRecipe, Void> {
 
     private RecipeRepository repository;
 
@@ -22,7 +22,7 @@ public class GetLastSavedRecipe extends SingleUseCase<Recipe, Void> {
     }
 
     @Override
-    protected Single<Recipe> build(Void aVoid) {
+    protected Single<DomainRecipe> build(Void aVoid) {
         return repository.getLastSavedRecipe();
     }
 }

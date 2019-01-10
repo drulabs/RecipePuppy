@@ -1,6 +1,6 @@
 package org.drulabs.domain.usecases;
 
-import org.drulabs.domain.entities.Recipe;
+import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.repository.RecipeRepository;
 import org.drulabs.domain.usecases.base.CompletableUseCase;
 
@@ -10,7 +10,7 @@ import javax.inject.Named;
 import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 
-public class DeleteRecipe extends CompletableUseCase<Recipe> {
+public class DeleteRecipe extends CompletableUseCase<DomainRecipe> {
 
     private RecipeRepository repository;
 
@@ -22,7 +22,7 @@ public class DeleteRecipe extends CompletableUseCase<Recipe> {
     }
 
     @Override
-    protected Completable build(Recipe recipe) {
-        return repository.deleteRecipe(recipe);
+    protected Completable build(DomainRecipe domainRecipe) {
+        return repository.deleteRecipe(domainRecipe);
     }
 }

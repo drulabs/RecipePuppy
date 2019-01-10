@@ -1,6 +1,6 @@
 package org.drulabs.domain.usecases;
 
-import org.drulabs.domain.entities.Recipe;
+import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.repository.RecipeRepository;
 import org.drulabs.domain.usecases.base.ObservableUseCase;
 
@@ -10,7 +10,7 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 
-public class GetSavedRecipes extends ObservableUseCase<Recipe, Void> {
+public class GetSavedRecipes extends ObservableUseCase<DomainRecipe, Void> {
 
     private RecipeRepository repository;
 
@@ -22,7 +22,7 @@ public class GetSavedRecipes extends ObservableUseCase<Recipe, Void> {
     }
 
     @Override
-    protected Observable<Recipe> build(Void aVoid) {
+    protected Observable<DomainRecipe> build(Void aVoid) {
         return repository.getSavedRecipes();
     }
 }

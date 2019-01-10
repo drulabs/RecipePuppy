@@ -1,6 +1,6 @@
 package org.drulabs.domain.usecases;
 
-import org.drulabs.domain.entities.Recipe;
+import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.entities.RecipeRequest;
 import org.drulabs.domain.repository.RecipeRepository;
 import org.drulabs.domain.usecases.base.ObservableUseCase;
@@ -11,7 +11,7 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 
-public class GetRecipes extends ObservableUseCase<Recipe, RecipeRequest> {
+public class GetRecipes extends ObservableUseCase<DomainRecipe, RecipeRequest> {
 
     private RecipeRepository repository;
 
@@ -23,7 +23,7 @@ public class GetRecipes extends ObservableUseCase<Recipe, RecipeRequest> {
     }
 
     @Override
-    protected Observable<Recipe> build(RecipeRequest request) {
+    protected Observable<DomainRecipe> build(RecipeRequest request) {
         return repository.getRecipes(request.getSearchQuery(), request.getPageNum());
     }
 }

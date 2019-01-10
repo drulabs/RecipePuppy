@@ -1,4 +1,4 @@
-package org.drulabs.data.entity;
+package org.drulabs.data.entities;
 
 import java.util.List;
 import java.util.Objects;

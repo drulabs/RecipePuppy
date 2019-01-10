@@ -1,10 +1,10 @@
 package org.drulabs.data.repository;
 
-import org.drulabs.data.entity.DataRecipe;
+import org.drulabs.data.entities.DataRecipe;
 import org.drulabs.data.mapper.DomainMapper;
 import org.drulabs.data.mapper.DomainDataMapper;
 import org.drulabs.data.utils.Generator;
-import org.drulabs.domain.entities.Recipe;
+import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.repository.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,9 +23,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
-public class DataRecipeRepositoryTest {
+public class DataDomainRecipeRepositoryTest {
 
-    private DomainMapper<Recipe> mapper = new DomainDataMapper();
+    private DomainMapper<DomainRecipe> mapper = new DomainDataMapper();
     private RecipeRepository recipeRepository;
 
     @Mock
@@ -52,7 +52,7 @@ public class DataRecipeRepositoryTest {
         when(remoteDataSource.getRecipes(searchQuery, pageNum))
                 .thenReturn(Observable.just(dataRecipe1, dataRecipe2, dataRecipe3));
 
-        TestObserver<Recipe> testObserver = recipeRepository.getRecipes(searchQuery, pageNum)
+        TestObserver<DomainRecipe> testObserver = recipeRepository.getRecipes(searchQuery, pageNum)
                 .test();
 
         testObserver.assertValues(
@@ -74,7 +74,7 @@ public class DataRecipeRepositoryTest {
         when(localDataSource.getSavedRecipes())
                 .thenReturn(Observable.just(dataRecipe1, dataRecipe2, dataRecipe3));
 
-        TestObserver<Recipe> testObserver = recipeRepository.getSavedRecipes().test();
+        TestObserver<DomainRecipe> testObserver = recipeRepository.getSavedRecipes().test();
 
         testObserver.assertValues(
                 mapper.mapTo(dataRecipe1),
@@ -88,12 +88,12 @@ public class DataRecipeRepositoryTest {
     @Test
     public void testSaveRecipe() {
         DataRecipe dataRecipe = Generator.generateDomainRecipe();
-        Recipe recipe = mapper.mapTo(dataRecipe);
+        DomainRecipe domainRecipe = mapper.mapTo(dataRecipe);
 
         when(localDataSource.saveRecipe(dataRecipe))
                 .thenReturn(Completable.complete());
 
-        TestObserver testObserver = recipeRepository.saveRecipe(recipe).test();
+        TestObserver testObserver = recipeRepository.saveRecipe(domainRecipe).test();
 
         testObserver.assertComplete();
 
@@ -103,12 +103,12 @@ public class DataRecipeRepositoryTest {
     @Test
     public void testDeleteRecipe() {
         DataRecipe dataRecipe = Generator.generateDomainRecipe();
-        Recipe recipe = mapper.mapTo(dataRecipe);
+        DomainRecipe domainRecipe = mapper.mapTo(dataRecipe);
 
         when(localDataSource.deleteRecipe(dataRecipe))
                 .thenReturn(Completable.complete());
 
-        TestObserver testObserver = recipeRepository.deleteRecipe(recipe).test();
+        TestObserver testObserver = recipeRepository.deleteRecipe(domainRecipe).test();
 
         testObserver.assertComplete();
 
@@ -131,14 +131,14 @@ public class DataRecipeRepositoryTest {
     @Test
     public void testGetLastSavedRecipe() {
         DataRecipe dataRecipe = Generator.generateDomainRecipe();
-        Recipe recipe = mapper.mapTo(dataRecipe);
+        DomainRecipe domainRecipe = mapper.mapTo(dataRecipe);
 
         when(localDataSource.getLastSavedRecipe())
                 .thenReturn(Single.just(dataRecipe));
 
-        TestObserver<Recipe> testObserver = recipeRepository.getLastSavedRecipe().test();
+        TestObserver<DomainRecipe> testObserver = recipeRepository.getLastSavedRecipe().test();
 
-        testObserver.assertValue(recipe);
+        testObserver.assertValue(domainRecipe);
 
         verify(localDataSource, times(1)).getLastSavedRecipe();
     }

@@ -1,6 +1,6 @@
 package org.drulabs.data.repository;
 
-import org.drulabs.data.entity.DataRecipe;
+import org.drulabs.data.entities.DataRecipe;
 
 import io.reactivex.Observable;
 

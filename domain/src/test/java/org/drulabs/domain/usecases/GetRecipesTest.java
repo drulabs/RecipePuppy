@@ -1,6 +1,6 @@
 package org.drulabs.domain.usecases;
 
-import org.drulabs.domain.entities.Recipe;
+import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.entities.RecipeRequest;
 import org.drulabs.domain.repository.RecipeRepository;
 import org.drulabs.domain.utils.TestFactory;
@@ -39,16 +39,16 @@ public class GetRecipesTest {
 
         RecipeRequest recipeRequest = TestFactory.getRecipeRequest();
 
-        Recipe recipe1 = TestFactory.getRecipe();
-        Recipe recipe2 = TestFactory.getRecipe();
-        Recipe recipe3 = TestFactory.getRecipe();
+        DomainRecipe domainRecipe1 = TestFactory.getRecipe();
+        DomainRecipe domainRecipe2 = TestFactory.getRecipe();
+        DomainRecipe domainRecipe3 = TestFactory.getRecipe();
 
         when(repository.getRecipes(recipeRequest.getSearchQuery(), recipeRequest.getPageNum()))
-                .thenReturn(Observable.just(recipe1, recipe2, recipe3));
+                .thenReturn(Observable.just(domainRecipe1, domainRecipe2, domainRecipe3));
 
-        TestObserver<Recipe> observer = getRecipes.run(recipeRequest).test();
+        TestObserver<DomainRecipe> observer = getRecipes.run(recipeRequest).test();
 
-        observer.assertValues(recipe1, recipe2, recipe3);
+        observer.assertValues(domainRecipe1, domainRecipe2, domainRecipe3);
     }
 
     @Test
@@ -56,14 +56,14 @@ public class GetRecipesTest {
 
         RecipeRequest recipeRequest = TestFactory.getRecipeRequest();
 
-        Recipe recipe1 = TestFactory.getRecipe();
-        Recipe recipe2 = TestFactory.getRecipe();
-        Recipe recipe3 = TestFactory.getRecipe();
+        DomainRecipe domainRecipe1 = TestFactory.getRecipe();
+        DomainRecipe domainRecipe2 = TestFactory.getRecipe();
+        DomainRecipe domainRecipe3 = TestFactory.getRecipe();
 
         when(repository.getRecipes(recipeRequest.getSearchQuery(), recipeRequest.getPageNum()))
-                .thenReturn(Observable.just(recipe1, recipe2, recipe3));
+                .thenReturn(Observable.just(domainRecipe1, domainRecipe2, domainRecipe3));
 
-        TestObserver<Recipe> observer = getRecipes.run(recipeRequest).test();
+        TestObserver<DomainRecipe> observer = getRecipes.run(recipeRequest).test();
 
         verify(repository, times(1))
                 .getRecipes(recipeRequest.getSearchQuery(), recipeRequest.getPageNum());

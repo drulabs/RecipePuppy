@@ -1,6 +1,6 @@
 package org.drulabs.persistence.mapper;
 
-import org.drulabs.data.entity.DataRecipe;
+import org.drulabs.data.entities.DataRecipe;
 import org.drulabs.persistence.entities.DBRecipe;
 
 public class PersistenceDataMapper implements PersistenceMapper<DataRecipe> {

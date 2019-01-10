@@ -1,6 +1,6 @@
 package org.drulabs.network;
 
-import org.drulabs.data.entity.DataRecipe;
+import org.drulabs.data.entities.DataRecipe;
 import org.drulabs.data.repository.RemoteDataSource;
 import org.drulabs.network.api.RecipeService;
 import org.drulabs.network.entities.NetworkRecipe;

@@ -1,6 +1,6 @@
 package org.drulabs.persistence;
 
-import org.drulabs.data.entity.DataRecipe;
+import org.drulabs.data.entities.DataRecipe;
 import org.drulabs.data.repository.LocalDataSource;
 import org.drulabs.persistence.db.RecipeDao;
 import org.drulabs.persistence.entities.DBRecipe;

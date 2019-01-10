@@ -1,6 +1,6 @@
 package org.drulabs.network.mapper;
 
-import org.drulabs.data.entity.DataRecipe;
+import org.drulabs.data.entities.DataRecipe;
 import org.drulabs.network.entities.NetworkRecipe;
 
 import java.util.Arrays;

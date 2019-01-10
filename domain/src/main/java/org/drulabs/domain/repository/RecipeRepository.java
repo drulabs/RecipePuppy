@@ -1,6 +1,6 @@
 package org.drulabs.domain.repository;
 
-import org.drulabs.domain.entities.Recipe;
+import org.drulabs.domain.entities.DomainRecipe;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -8,16 +8,16 @@ import io.reactivex.Single;
 
 public interface RecipeRepository {
 
-    Observable<Recipe> getRecipes(String searchQuery, int pageNum);
+    Observable<DomainRecipe> getRecipes(String searchQuery, int pageNum);
 
-    Observable<Recipe> getSavedRecipes();
+    Observable<DomainRecipe> getSavedRecipes();
 
-    Completable saveRecipe(Recipe recipe);
+    Completable saveRecipe(DomainRecipe domainRecipe);
 
-    Completable deleteRecipe(Recipe recipe);
+    Completable deleteRecipe(DomainRecipe domainRecipe);
 
     Completable deleteAllRecipes();
 
-    Single<Recipe> getLastSavedRecipe();
+    Single<DomainRecipe> getLastSavedRecipe();
 
 }

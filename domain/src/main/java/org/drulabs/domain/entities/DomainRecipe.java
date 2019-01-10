@@ -2,14 +2,14 @@ package org.drulabs.domain.entities;
 
 import java.util.Objects;
 
-public class Recipe {
+public class DomainRecipe {
 
     private String title;
     private String href;
     private String ingredients;
     private String thumbnail;
 
-    public Recipe(String title, String href, String ingredients, String thumbnail) {
+    public DomainRecipe(String title, String href, String ingredients, String thumbnail) {
         this.title = title;
         this.href = href;
         this.ingredients = ingredients;
@@ -36,11 +36,11 @@ public class Recipe {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Recipe recipe = (Recipe) o;
-        return Objects.equals(title, recipe.title) &&
-                Objects.equals(href, recipe.href) &&
-                Objects.equals(ingredients, recipe.ingredients) &&
-                Objects.equals(thumbnail, recipe.thumbnail);
+        DomainRecipe domainRecipe = (DomainRecipe) o;
+        return Objects.equals(title, domainRecipe.title) &&
+                Objects.equals(href, domainRecipe.href) &&
+                Objects.equals(ingredients, domainRecipe.ingredients) &&
+                Objects.equals(thumbnail, domainRecipe.thumbnail);
     }
 
     @Override

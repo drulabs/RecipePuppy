@@ -1,6 +1,6 @@
 package org.drulabs.data.mapper;
 
-import org.drulabs.data.entity.DataRecipe;
+import org.drulabs.data.entities.DataRecipe;
 
 public interface DomainMapper<R> {
     R mapTo(DataRecipe dataRecipe);

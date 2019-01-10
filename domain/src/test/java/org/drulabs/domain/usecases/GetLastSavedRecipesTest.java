@@ -1,6 +1,6 @@
 package org.drulabs.domain.usecases;
 
-import org.drulabs.domain.entities.Recipe;
+import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.repository.RecipeRepository;
 import org.drulabs.domain.utils.TestFactory;
 import org.junit.Before;
@@ -33,12 +33,12 @@ public class GetLastSavedRecipesTest {
     @Test
     public void testGetSavedRecipesUseCase() {
 
-        Recipe recipe1 = TestFactory.getRecipe();
+        DomainRecipe domainRecipe1 = TestFactory.getRecipe();
 
-        when(repository.getLastSavedRecipe()).thenReturn(Single.just(recipe1));
-        TestObserver<Recipe> observer = getLastSavedRecipe.run(null).test();
+        when(repository.getLastSavedRecipe()).thenReturn(Single.just(domainRecipe1));
+        TestObserver<DomainRecipe> observer = getLastSavedRecipe.run(null).test();
 
-        observer.assertValue(recipe1);
+        observer.assertValue(domainRecipe1);
     }
 
 }

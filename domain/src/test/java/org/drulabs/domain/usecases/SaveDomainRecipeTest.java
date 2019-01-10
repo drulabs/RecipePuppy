@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
-public class SaveRecipeTest {
+public class SaveDomainRecipeTest {
 
     private SaveRecipe saveRecipe;
     @Mock
