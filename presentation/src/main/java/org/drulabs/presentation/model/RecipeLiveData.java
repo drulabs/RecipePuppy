@@ -28,12 +28,18 @@ public class RecipeLiveData extends LiveData<Model<List<PresentationRecipe>>> {
 
     @Override
     protected void onActive() {
+        postValue(Model.loading(true));
         disposable = observable.map(domainRecipe -> mapper.mapFrom(domainRecipe))
                 .doOnNext(r -> Log.d(TAG, "onActive: " + r.getName()))
                 .doOnComplete(() -> Log.d(TAG, "onActive: COMPLETE"))
                 .toList()
-                .subscribe((presentationRecipes, throwable) -> postValue(Model.success
-                        (presentationRecipes)));
+                .subscribe((presentationRecipes, throwable) -> {
+                    if (throwable != null) {
+                        postValue(Model.error(throwable));
+                    } else {
+                        postValue(Model.success(presentationRecipes));
+                    }
+                });
     }
 
     @Override

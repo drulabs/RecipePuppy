@@ -29,11 +29,11 @@ public class Model<T> {
         return new Model<>(false, null, e);
     }
 
-    static Model error(Throwable throwable) {
+    static <E> Model<E> error(Throwable throwable) {
         return new Model<>(false, throwable, null);
     }
 
-    static Model loading(boolean loadingStatus) {
-        return new Model<>(true, null, null);
+    static <E> Model<E> loading(boolean loadingStatus) {
+        return new Model<>(loadingStatus, null, null);
     }
 }
