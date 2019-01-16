@@ -102,4 +102,20 @@ public class LocalDataSourceImplTest {
         verify(dao, times(1)).getLastSavedRecipe();
     }
 
+    @Test
+    public void testRecipeSearch() {
+        DBRecipe dbRecipe = Generator.generateRecipe("00");
+        DataRecipe dataRecipe = mapper.mapTo(dbRecipe);
+
+        when(dao.lookupRecipe("Test00")).thenReturn(Single.just(dbRecipe));
+
+        TestObserver<DataRecipe> testObserver = localDataSource.lookupRecipe("Test00").test();
+        testObserver.assertValue(recipe ->
+                recipe.getName().equalsIgnoreCase(dataRecipe.getName())
+                        && recipe.getDetailsUrl().equalsIgnoreCase(dataRecipe.getDetailsUrl())
+        );
+
+        verify(dao, times(1)).lookupRecipe("Test00");
+    }
+
 }

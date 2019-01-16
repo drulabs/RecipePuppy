@@ -11,8 +11,6 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -22,16 +20,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
-public class GetRecipesTest {
+public class GetRecipesTaskTest {
 
-    private GetRecipes getRecipes;
+    private GetRecipesTask getRecipesTask;
     @Mock
     private RecipeRepository repository;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        getRecipes = new GetRecipes(repository, Schedulers.trampoline(), Schedulers
+        getRecipesTask = new GetRecipesTask(repository, Schedulers.trampoline(), Schedulers
                 .trampoline());
     }
 
@@ -51,7 +49,7 @@ public class GetRecipesTest {
         when(repository.getRecipes(recipeRequest.getSearchQuery(), recipeRequest.getPageNum()))
                 .thenReturn(Observable.just(domainRecipe1, domainRecipe2, domainRecipe3));
 
-        TestObserver<DomainRecipe> observer = getRecipes.run(recipeRequest).test();
+        TestObserver<DomainRecipe> observer = getRecipesTask.run(recipeRequest).test();
 
         observer.assertValues(domainRecipe1, domainRecipe2, domainRecipe3);
     }
@@ -68,7 +66,7 @@ public class GetRecipesTest {
         when(repository.getRecipes(recipeRequest.getSearchQuery(), recipeRequest.getPageNum()))
                 .thenReturn(Observable.just(domainRecipe1, domainRecipe2, domainRecipe3));
 
-        TestObserver<DomainRecipe> observer = getRecipes.run(recipeRequest).test();
+        TestObserver<DomainRecipe> observer = getRecipesTask.run(recipeRequest).test();
 
         verify(repository, times(1))
                 .getRecipes(recipeRequest.getSearchQuery(), recipeRequest.getPageNum());

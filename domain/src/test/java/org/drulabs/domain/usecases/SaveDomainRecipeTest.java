@@ -10,8 +10,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -25,20 +23,20 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class SaveDomainRecipeTest {
 
-    private SaveRecipe saveRecipe;
+    private SaveRecipeTask saveRecipeTask;
     @Mock
     private RecipeRepository repository;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        saveRecipe = new SaveRecipe(repository, Schedulers.trampoline(), Schedulers.trampoline());
+        saveRecipeTask = new SaveRecipeTask(repository, Schedulers.trampoline(), Schedulers.trampoline());
     }
 
     @Test
     public void testProjectSavedUseCase() {
         when(repository.saveRecipe(any())).thenReturn(Completable.complete());
-        TestObserver observer = saveRecipe.run(TestFactory.getRecipe()).test();
+        TestObserver observer = saveRecipeTask.run(TestFactory.getRecipe()).test();
         observer.assertComplete();
     }
 

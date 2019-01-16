@@ -16,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
 @RunWith(AndroidJUnit4.class)
@@ -42,17 +43,28 @@ public class LocalDataSourceTest {
     }
 
     @Test
-    public void RecipeReadWriteTest() {
+    public void recipeReadWriteTest() {
         DBRecipe dbRecipe = Generator.generateRecipe("myRecipe");
 
         dao.saveRecipe(dbRecipe);
 
-        TestSubscriber<DBRecipe> testSubscriber = dao.getSavedRecipes().test(); //blockingLatest();
+        TestSubscriber<DBRecipe> testSubscriber = dao.getSavedRecipes().test();
 
         testSubscriber.assertValue(
                 recipe -> recipe.getRecipeName().equals(dbRecipe.getRecipeName())
                         && recipe.getCreateTime() == dbRecipe.getCreateTime()
         );
+    }
+
+    @Test
+    public void lookupRecipeTest() {
+        DBRecipe dbRecipe = Generator.generateRecipe("111");
+
+        dao.saveRecipe(dbRecipe);
+
+        TestObserver<DBRecipe> testObserver = dao.lookupRecipe("Test111").test();
+
+        testObserver.assertValue(dbRecipe);
     }
 
 }

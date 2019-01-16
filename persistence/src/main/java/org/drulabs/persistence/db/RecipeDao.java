@@ -17,7 +17,10 @@ public interface RecipeDao {
     @Query("SELECT * FROM saved_recipes")
     Flowable<DBRecipe> getSavedRecipes();
 
-    @Insert
+    @Query("SELECT * FROM saved_recipes WHERE recipe_name =:name")
+    Single<DBRecipe> lookupRecipe(String name);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveRecipe(DBRecipe... recipe);
 
     @Delete

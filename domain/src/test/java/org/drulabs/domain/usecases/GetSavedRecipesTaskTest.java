@@ -18,16 +18,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
-public class GetSavedRecipesTest {
+public class GetSavedRecipesTaskTest {
 
-    private GetSavedRecipes getSavedRecipes;
+    private GetSavedRecipesTask getSavedRecipesTask;
     @Mock
     private RecipeRepository repository;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        getSavedRecipes = new GetSavedRecipes(repository, Schedulers.trampoline(), Schedulers
+        getSavedRecipesTask = new GetSavedRecipesTask(repository, Schedulers.trampoline(), Schedulers
                 .trampoline());
     }
 
@@ -39,7 +39,7 @@ public class GetSavedRecipesTest {
         DomainRecipe domainRecipe3 = TestFactory.getRecipe();
 
         when(repository.getSavedRecipes()).thenReturn(Observable.just(domainRecipe1, domainRecipe2, domainRecipe3));
-        TestObserver<DomainRecipe> observer = getSavedRecipes.run(null).test();
+        TestObserver<DomainRecipe> observer = getSavedRecipesTask.run(null).test();
 
         observer.assertValues(domainRecipe1, domainRecipe2, domainRecipe3);
     }

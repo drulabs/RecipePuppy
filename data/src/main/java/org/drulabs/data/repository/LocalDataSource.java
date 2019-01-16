@@ -18,4 +18,6 @@ public interface LocalDataSource {
 
     Single<DataRecipe> getLastSavedRecipe();
 
+    Single<DataRecipe> lookupRecipe(String name);
+
 }

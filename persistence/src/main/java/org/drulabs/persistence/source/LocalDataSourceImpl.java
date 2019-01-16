@@ -51,4 +51,9 @@ public class LocalDataSourceImpl implements LocalDataSource {
     public Single<DataRecipe> getLastSavedRecipe() {
         return dao.getLastSavedRecipe().map(recipe -> mapper.mapTo(recipe));
     }
+
+    @Override
+    public Single<DataRecipe> lookupRecipe(String name) {
+        return dao.lookupRecipe(name).map(recipe -> mapper.mapTo(recipe));
+    }
 }

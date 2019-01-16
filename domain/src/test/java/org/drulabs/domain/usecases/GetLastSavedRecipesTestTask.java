@@ -17,16 +17,16 @@ import io.reactivex.schedulers.Schedulers;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
-public class GetLastSavedRecipesTest {
+public class GetLastSavedRecipesTestTask {
 
-    private GetLastSavedRecipe getLastSavedRecipe;
+    private GetLastSavedRecipeTask getLastSavedRecipeTask;
     @Mock
     private RecipeRepository repository;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        getLastSavedRecipe = new GetLastSavedRecipe(repository, Schedulers.trampoline(), Schedulers
+        getLastSavedRecipeTask = new GetLastSavedRecipeTask(repository, Schedulers.trampoline(), Schedulers
                 .trampoline());
     }
 
@@ -36,7 +36,7 @@ public class GetLastSavedRecipesTest {
         DomainRecipe domainRecipe1 = TestFactory.getRecipe();
 
         when(repository.getLastSavedRecipe()).thenReturn(Single.just(domainRecipe1));
-        TestObserver<DomainRecipe> observer = getLastSavedRecipe.run(null).test();
+        TestObserver<DomainRecipe> observer = getLastSavedRecipeTask.run(null).test();
 
         observer.assertValue(domainRecipe1);
     }
