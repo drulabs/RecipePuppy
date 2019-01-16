@@ -8,13 +8,15 @@ public class PresentationRecipe {
     private String detailsUrl;
     private List<String> ingredientList;
     private String thumbnailUrl;
+    private boolean favorite;
 
     public PresentationRecipe(String name, String detailsUrl, List<String> ingredientList, String
-            thumbnailUrl) {
+            thumbnailUrl, boolean favorite) {
         this.name = name;
         this.detailsUrl = detailsUrl;
         this.ingredientList = ingredientList;
         this.thumbnailUrl = thumbnailUrl;
+        this.favorite = favorite;
     }
 
     public String getName() {
@@ -31,6 +33,14 @@ public class PresentationRecipe {
 
     public String getThumbnailUrl() {
         return thumbnailUrl;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 
     @Override

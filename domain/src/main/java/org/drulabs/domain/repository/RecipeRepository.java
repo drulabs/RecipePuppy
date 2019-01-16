@@ -22,4 +22,6 @@ public interface RecipeRepository {
 
     Single<DomainRecipe> getLastSavedRecipe();
 
+    Single<DomainRecipe> lookupSavedRecipe(String recipeName);
+
 }

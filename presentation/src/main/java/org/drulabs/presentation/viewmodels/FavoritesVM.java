@@ -19,7 +19,6 @@ import javax.inject.Inject;
 
 public class FavoritesVM extends BaseVM {
 
-    private PresentationMapper<DomainRecipe> mapper;
     private LiveData<Model<List<PresentationRecipe>>> savedRecipes;
     private LiveData<Model<PresentationRecipe>> lastSavedRecipe;
     private DeleteAllRecipesTask deleteAllRecipesTask;
@@ -30,7 +29,6 @@ public class FavoritesVM extends BaseVM {
                        GetSavedRecipesTask getSavedRecipesTask,
                        GetLastSavedRecipeTask getLastSavedRecipeTask,
                        DeleteAllRecipesTask deleteAllRecipesTask) {
-        this.mapper = mapper;
         this.savedRecipes = new RecipeLiveData<>(getSavedRecipesTask.run(null)
                 .map(mapper::mapFrom));
         this.lastSavedRecipe = new SingleLiveData<>(getLastSavedRecipeTask.run(null).map
@@ -46,7 +44,7 @@ public class FavoritesVM extends BaseVM {
         return lastSavedRecipe;
     }
 
-    public LiveData<Boolean> deleteAllFavoriteRecipes(PresentationRecipe presentationRecipe) {
+    public LiveData<Boolean> deleteAllFavoriteRecipes() {
         return (new CompletableLiveData(deleteAllRecipesTask.run(null)));
     }
 }

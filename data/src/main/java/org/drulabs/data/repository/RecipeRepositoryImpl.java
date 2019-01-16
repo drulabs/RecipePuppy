@@ -60,4 +60,10 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         return localDataSource.getLastSavedRecipe()
                 .map(domainRecipe -> mapper.mapTo(domainRecipe));
     }
+
+    @Override
+    public Single<DomainRecipe> lookupSavedRecipe(String recipeName) {
+        return localDataSource.lookupRecipe(recipeName)
+                .map(dataRecipe -> mapper.mapTo(dataRecipe));
+    }
 }
