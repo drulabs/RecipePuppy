@@ -109,7 +109,7 @@ public class FavoritesVMTest {
         favoritesVM.getDeleteRecipeStatus()
                 .observeForever(aBoolean -> {
                     System.out.println("testDeleteRecipeFromFavorite Observe: called");
-                    assertEquals("testDeleteRecipeFromFavorite", false, aBoolean);
+                    assertEquals("testDeleteRecipeFromFavorite", true, aBoolean);
                 });
 
         favoritesVM.deleteRecipeFromFavorite(presentationRecipe);
