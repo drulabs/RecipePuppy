@@ -1,4 +1,4 @@
-package org.drulabs.presentation.model;
+package org.drulabs.presentation.custom;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.MutableLiveData;

@@ -12,7 +12,7 @@ public class PresentattionDomainMapper implements PresentationMapper<DomainRecip
     public PresentationRecipe mapFrom(DomainRecipe domainRecipe) {
         List<String> ingredientList = Arrays.asList(domainRecipe.getIngredients().split(","));
         return (new PresentationRecipe(domainRecipe.getTitle(), domainRecipe.getHref(),
-                ingredientList, domainRecipe.getThumbnail()));
+                ingredientList, domainRecipe.getThumbnail(), false));
     }
 
     @Override

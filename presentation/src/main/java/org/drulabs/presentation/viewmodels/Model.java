@@ -1,4 +1,4 @@
-package org.drulabs.presentation.model;
+package org.drulabs.presentation.viewmodels;
 
 public class Model<T> {
 

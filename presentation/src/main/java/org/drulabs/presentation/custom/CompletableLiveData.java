@@ -1,4 +1,4 @@
-package org.drulabs.presentation.model;
+package org.drulabs.presentation.custom;
 
 import io.reactivex.Completable;
 import io.reactivex.disposables.Disposable;
@@ -14,8 +14,13 @@ public class CompletableLiveData extends SingleLiveEvent<Boolean> {
 
     @Override
     protected void onActive() {
-        disposable = completable.subscribe(() -> postValue(true),
-                throwable -> postValue(false));
+        disposable = completable.subscribe(() -> {
+                    postValue(true);
+                },
+                throwable -> {
+                    postValue(false);
+                }
+        );
     }
 
     @Override
