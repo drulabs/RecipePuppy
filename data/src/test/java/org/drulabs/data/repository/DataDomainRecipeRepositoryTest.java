@@ -1,8 +1,8 @@
 package org.drulabs.data.repository;
 
 import org.drulabs.data.entities.DataRecipe;
-import org.drulabs.data.mapper.DomainMapper;
-import org.drulabs.data.mapper.DomainDataMapper;
+import org.drulabs.data.mapper.DataDomainMapper;
+import org.drulabs.data.mapper.DataMapper;
 import org.drulabs.data.utils.Generator;
 import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.repository.RecipeRepository;
@@ -18,6 +18,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,7 +26,7 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class DataDomainRecipeRepositoryTest {
 
-    private DomainMapper<DomainRecipe> mapper = new DomainDataMapper();
+    private DataMapper<DomainRecipe> mapper = new DataDomainMapper();
     private RecipeRepository recipeRepository;
 
     @Mock
@@ -51,11 +52,13 @@ public class DataDomainRecipeRepositoryTest {
 
         when(remoteDataSource.getRecipes(searchQuery, pageNum))
                 .thenReturn(Observable.just(dataRecipe1, dataRecipe2, dataRecipe3));
+        when(localDataSource.lookupRecipe(any()))
+                .thenReturn(Single.just(dataRecipe1));
 
         TestObserver<DomainRecipe> testObserver = recipeRepository.getRecipes(searchQuery, pageNum)
                 .test();
 
-        testObserver.assertValues(
+        testObserver.assertResult(
                 mapper.mapTo(dataRecipe1),
                 mapper.mapTo(dataRecipe2),
                 mapper.mapTo(dataRecipe3)

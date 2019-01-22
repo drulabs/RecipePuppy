@@ -12,7 +12,7 @@ public class PresentattionDomainMapper implements PresentationMapper<DomainRecip
     public PresentationRecipe mapFrom(DomainRecipe domainRecipe) {
         List<String> ingredientList = Arrays.asList(domainRecipe.getIngredients().split(","));
         return (new PresentationRecipe(domainRecipe.getTitle(), domainRecipe.getHref(),
-                ingredientList, domainRecipe.getThumbnail(), false));
+                ingredientList, domainRecipe.getThumbnail(), domainRecipe.isStarred()));
     }
 
     @Override
@@ -20,7 +20,10 @@ public class PresentattionDomainMapper implements PresentationMapper<DomainRecip
         String ingredients = presentationRecipe.getIngredientList().toString()
                 .replace(", ", ",")
                 .replaceAll("[\\[.\\]]", "");
-        return (new DomainRecipe(presentationRecipe.getName(), presentationRecipe.getDetailsUrl()
-                , ingredients, presentationRecipe.getThumbnailUrl()));
+        DomainRecipe domainRecipe = new DomainRecipe(presentationRecipe.getName(),
+                presentationRecipe.getDetailsUrl(), ingredients, presentationRecipe
+                .getThumbnailUrl());
+        domainRecipe.setStarred(presentationRecipe.isFavorite());
+        return domainRecipe;
     }
 }

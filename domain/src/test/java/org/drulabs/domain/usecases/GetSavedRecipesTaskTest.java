@@ -14,7 +14,6 @@ import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
@@ -39,7 +38,7 @@ public class GetSavedRecipesTaskTest {
         DomainRecipe domainRecipe3 = TestFactory.getRecipe();
 
         when(repository.getSavedRecipes()).thenReturn(Observable.just(domainRecipe1, domainRecipe2, domainRecipe3));
-        TestObserver<DomainRecipe> observer = getSavedRecipesTask.run(null).test();
+        TestObserver<DomainRecipe> observer = getSavedRecipesTask.build(null).test();
 
         observer.assertValues(domainRecipe1, domainRecipe2, domainRecipe3);
     }

@@ -2,22 +2,27 @@ package org.drulabs.presentation.viewmodels;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
 
 import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.entities.RecipeRequest;
 import org.drulabs.domain.usecases.DeleteRecipeTask;
 import org.drulabs.domain.usecases.GetRecipesTask;
-import org.drulabs.domain.usecases.LookupRecipeTask;
 import org.drulabs.domain.usecases.SaveRecipeTask;
+import org.drulabs.presentation.custom.SingleLiveEvent;
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.mapper.PresentationMapper;
-import org.drulabs.presentation.custom.SingleLiveEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class HomeVM extends BaseVM {
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
+
+public class HomeVM extends ViewModel {
 
     private MutableLiveData<Model<List<PresentationRecipe>>> recipesLiveData = new
             MutableLiveData<>();
@@ -29,19 +34,16 @@ public class HomeVM extends BaseVM {
     private SaveRecipeTask saveRecipeTask;
     private DeleteRecipeTask deleteRecipeTask;
     private GetRecipesTask getRecipesTask;
-    private LookupRecipeTask lookupRecipeTask;
 
     @Inject
     public HomeVM(PresentationMapper<DomainRecipe> mapper,
                   GetRecipesTask getRecipesTask,
                   SaveRecipeTask saveRecipeTask,
-                  DeleteRecipeTask deleteRecipeTask,
-                  LookupRecipeTask lookupRecipeTask) {
+                  DeleteRecipeTask deleteRecipeTask) {
         this.mapper = mapper;
         this.getRecipesTask = getRecipesTask;
         this.saveRecipeTask = saveRecipeTask;
         this.deleteRecipeTask = deleteRecipeTask;
-        this.lookupRecipeTask = lookupRecipeTask;
     }
 
     public LiveData<Model<List<PresentationRecipe>>> getRecipesLiveData() {
@@ -59,33 +61,65 @@ public class HomeVM extends BaseVM {
     public void searchRecipes(String searchText, int pageNum) {
         recipesLiveData.postValue(Model.loading(true));
         RecipeRequest request = new RecipeRequest(searchText, pageNum);
-        addDisposable(
-                getRecipesTask.run(request)
-                        .map(mapper::mapFrom)
-                        .zipWith(lookupRecipeTask.run(request.getSearchQuery()).toObservable(),
-                                (presentationRecipe, domainRecipe) -> {
-                                    presentationRecipe.setFavorite(domainRecipe != null);
-                                    return presentationRecipe;
-                                })
-                        .toList()
-                        .subscribe(e -> recipesLiveData.postValue(Model.success(e)),
-                                throwable -> recipesLiveData.postValue(Model.error(throwable)))
-        );
+
+        getRecipesTask.run(disposableSingleObserver, request);
     }
 
     public void saveRecipeAsFavorite(PresentationRecipe presentationRecipe) {
-        addDisposable(
-                saveRecipeTask.run(mapper.mapTo(presentationRecipe))
-                        .subscribe(() -> saveRecipeStatus.postValue(true),
-                                throwable -> saveRecipeStatus.postValue(false))
-        );
+        saveRecipeTask.run(new BooleanObserver(saveRecipeStatus),
+                mapper.mapTo(presentationRecipe));
     }
 
     public void deleteRecipeFromFavorite(PresentationRecipe presentationRecipe) {
-        addDisposable(
-                deleteRecipeTask.run(mapper.mapTo(presentationRecipe))
-                        .subscribe(() -> deleteRecipeStatus.postValue(true),
-                                throwable -> deleteRecipeStatus.postValue(false))
-        );
+        deleteRecipeTask.run(new BooleanObserver(deleteRecipeStatus),
+                mapper.mapTo(presentationRecipe));
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        saveRecipeTask.dispose();
+        getRecipesTask.dispose();
+        deleteRecipeTask.dispose();
+    }
+
+    private class BooleanObserver extends DisposableCompletableObserver {
+
+        private MutableLiveData<Boolean> status;
+
+        BooleanObserver(MutableLiveData<Boolean> status) {
+            this.status = status;
+        }
+
+        @Override
+        public void onComplete() {
+            status.postValue(true);
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            status.postValue(false);
+        }
+    }
+
+    private DisposableSingleObserver<List<DomainRecipe>> disposableSingleObserver = new
+            DisposableSingleObserver<List<DomainRecipe>>() {
+                @Override
+                public void onSuccess(List<DomainRecipe> domainRecipes) {
+                    List<PresentationRecipe> presentationRecipes = new ArrayList<>();
+                    if (domainRecipes != null) {
+                        for (DomainRecipe d : domainRecipes) {
+                            PresentationRecipe presentationRecipe = mapper.mapFrom(d);
+                            presentationRecipes.add(presentationRecipe);
+                        }
+
+                    }
+                    recipesLiveData.postValue(Model.success(presentationRecipes));
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    recipesLiveData.postValue(Model.error(e));
+                }
+            };
 }

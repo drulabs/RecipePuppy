@@ -12,11 +12,16 @@ import org.drulabs.presentation.custom.SingleLiveEvent;
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.mapper.PresentationMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class FavoritesVM extends BaseVM {
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
+
+public class FavoritesVM {
 
     private MutableLiveData<Model<List<PresentationRecipe>>> savedRecipes = new MutableLiveData<>();
     private MutableLiveData<Model<PresentationRecipe>> lastSavedRecipe = new MutableLiveData<>();
@@ -50,17 +55,7 @@ public class FavoritesVM extends BaseVM {
 
     public void fetchSavedRecipes() {
         savedRecipes.postValue(Model.loading(true));
-        addDisposable(
-                getSavedRecipesTask.run(null)
-                        .map(domainRecipe -> {
-                            PresentationRecipe presentationRecipe = mapper.mapFrom(domainRecipe);
-                            presentationRecipe.setFavorite(true);
-                            return presentationRecipe;
-                        })
-                        .toList()
-                        .subscribe(e -> savedRecipes.postValue(Model.success(e)),
-                                throwable -> savedRecipes.postValue(Model.error(throwable)))
-        );
+        getSavedRecipesTask.run(new SavedRecipeObserver(), null);
     }
 
     public LiveData<Model<PresentationRecipe>> getLastSavedRecipe() {
@@ -69,13 +64,8 @@ public class FavoritesVM extends BaseVM {
 
     public void fetchLastSavedRecipe() {
         lastSavedRecipe.postValue(Model.loading(true));
-        addDisposable(
-                getLastSavedRecipeTask.run(null)
-                        .map(domainRecipe -> mapper.mapFrom(domainRecipe))
-                        .subscribe(presentationRecipe -> lastSavedRecipe.postValue(Model.success
-                                        (presentationRecipe)),
-                                throwable -> lastSavedRecipe.postValue(Model.error(throwable)))
-        );
+
+        getLastSavedRecipeTask.run(lastSavedRecipeObserver, null);
     }
 
     public LiveData<Boolean> getDeleteAllRecipeStatus() {
@@ -83,11 +73,8 @@ public class FavoritesVM extends BaseVM {
     }
 
     public void deleteAllFavoriteRecipes() {
-        addDisposable(
-                deleteAllRecipesTask.run(null)
-                        .subscribe(() -> deleteAllStatus.postValue(true),
-                                throwable -> deleteAllStatus.postValue(false))
-        );
+
+        deleteAllRecipesTask.run(new BooleanObserver(deleteAllStatus), null);
     }
 
     public LiveData<Boolean> getDeleteRecipeStatus() {
@@ -95,10 +82,66 @@ public class FavoritesVM extends BaseVM {
     }
 
     public void deleteRecipeFromFavorite(PresentationRecipe presentationRecipe) {
-        addDisposable(
-                deleteRecipeTask.run(mapper.mapTo(presentationRecipe))
-                        .subscribe(() -> deleteRecipeStatus.postValue(true),
-                                throwable -> deleteRecipeStatus.postValue(false))
-        );
+
+        deleteRecipeTask.run(new BooleanObserver(deleteRecipeStatus), mapper.mapTo(presentationRecipe));
     }
+
+    private class BooleanObserver extends DisposableCompletableObserver {
+
+        private MutableLiveData<Boolean> status;
+
+        BooleanObserver(MutableLiveData<Boolean> status) {
+            this.status = status;
+        }
+
+        @Override
+        public void onComplete() {
+            status.postValue(true);
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            status.postValue(false);
+        }
+    }
+
+    private class SavedRecipeObserver extends DisposableObserver<DomainRecipe> {
+
+        private List<PresentationRecipe> pr;
+
+        SavedRecipeObserver() {
+            pr = new ArrayList<>();
+        }
+
+        @Override
+        public void onNext(DomainRecipe domainRecipe) {
+            PresentationRecipe presentationRecipe = mapper.mapFrom(domainRecipe);
+            presentationRecipe.setFavorite(true);
+            pr.add(presentationRecipe);
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            savedRecipes.postValue(Model.error(e));
+        }
+
+        @Override
+        public void onComplete() {
+            savedRecipes.postValue(Model.success(pr));
+        }
+    }
+
+    private DisposableSingleObserver<DomainRecipe> lastSavedRecipeObserver = new
+            DisposableSingleObserver<DomainRecipe>() {
+                @Override
+                public void onSuccess(DomainRecipe domainRecipe) {
+                    PresentationRecipe presentationRecipe = mapper.mapFrom(domainRecipe);
+                    lastSavedRecipe.postValue(Model.success(presentationRecipe));
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    lastSavedRecipe.postValue(Model.error(e));
+                }
+            };
 }

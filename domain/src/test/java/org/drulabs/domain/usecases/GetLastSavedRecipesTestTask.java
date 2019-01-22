@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import io.reactivex.Single;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -36,9 +37,8 @@ public class GetLastSavedRecipesTestTask {
         DomainRecipe domainRecipe1 = TestFactory.getRecipe();
 
         when(repository.getLastSavedRecipe()).thenReturn(Single.just(domainRecipe1));
-        TestObserver<DomainRecipe> observer = getLastSavedRecipeTask.run(null).test();
-
-        observer.assertValue(domainRecipe1);
+        TestObserver<DomainRecipe> testObserver = getLastSavedRecipeTask.build( null).test();
+        testObserver.assertValue(domainRecipe1);
     }
 
 }

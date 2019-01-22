@@ -6,33 +6,31 @@ import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.entities.RecipeRequest;
 import org.drulabs.domain.usecases.DeleteRecipeTask;
 import org.drulabs.domain.usecases.GetRecipesTask;
-import org.drulabs.domain.usecases.LookupRecipeTask;
 import org.drulabs.domain.usecases.SaveRecipeTask;
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.mapper.PresentationMapper;
 import org.drulabs.presentation.mapper.PresentattionDomainMapper;
 import org.drulabs.presentation.utils.Generator;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class HomeVMTest {
@@ -47,67 +45,38 @@ public class HomeVMTest {
     private SaveRecipeTask saveRecipeTask;
     @Mock
     private DeleteRecipeTask deleteRecipeTask;
-    @Mock
-    private LookupRecipeTask lookupRecipeTask;
 
     private HomeVM homeVM;
+
+    @Captor
+    private ArgumentCaptor<DisposableSingleObserver<List<DomainRecipe>>> singleCaptor;
+
+    @Captor
+    private ArgumentCaptor<DisposableCompletableObserver> completableCaptor;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        homeVM = new HomeVM(mapper, getRecipesTask, saveRecipeTask, deleteRecipeTask,
-                lookupRecipeTask);
+        homeVM = new HomeVM(mapper, getRecipesTask, saveRecipeTask, deleteRecipeTask);
     }
 
     @Test
     public void testSearchRecipes() {
         PresentationRecipe presentationRecipe = Generator.generateRecipe("01");
+        List<PresentationRecipe> pr = new ArrayList<>();
+        pr.add(presentationRecipe);
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
+        List<DomainRecipe> dr = new ArrayList<>();
+        dr.add(domainRecipe);
 
         RecipeRequest request = new RecipeRequest("test", 1);
 
-        Observable<DomainRecipe> obs = Observable.just(domainRecipe);
-        when(getRecipesTask.run(request)).thenReturn(obs);
-        when(lookupRecipeTask.run(any())).thenReturn(Single.just(domainRecipe));
-
-        homeVM.getRecipesLiveData()
-                .observeForever(listModel -> {
-                    assert listModel != null;
-
-                    assertTrue(listModel.isLoading() || listModel.getData().contains
-                            (presentationRecipe));
-
-                });
-
         homeVM.searchRecipes(request.getSearchQuery(), request.getPageNum());
 
-        // assert homeVM.getRecipesLiveData().getValue().getData().contains(presentationRecipe);
-    }
+        verify(getRecipesTask).run(singleCaptor.capture(), eq(request));
+        singleCaptor.getValue().onSuccess(dr);
 
-    @Test
-    public void testFavoritesRecipe() {
-        PresentationRecipe presentationRecipe = Generator.generateRecipe("01");
-        DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
-
-        RecipeRequest request = new RecipeRequest("test", 1);
-
-        Observable<DomainRecipe> obs = Observable.just(domainRecipe);
-        when(getRecipesTask.run(request)).thenReturn(obs);
-        when(lookupRecipeTask.run(any())).thenReturn(Single.just(domainRecipe));
-
-        homeVM.getRecipesLiveData()
-                .observeForever(listModel -> {
-                    assert listModel != null;
-
-                    assertTrue(listModel.isLoading()
-                            || listModel.getData().get(0).isFavorite());
-                });
-
-        homeVM.searchRecipes(request.getSearchQuery(), request.getPageNum());
-
-        if (!Objects.requireNonNull(homeVM.getRecipesLiveData().getValue()).isLoading()) {
-            assertTrue(homeVM.getRecipesLiveData().getValue().getData().get(0).isFavorite());
-        }
+        assertEquals(homeVM.getRecipesLiveData().getValue().getData(), pr);
     }
 
     @Test
@@ -115,12 +84,25 @@ public class HomeVMTest {
         PresentationRecipe presentationRecipe = Generator.generateRecipe("01");
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
-        when(saveRecipeTask.run(domainRecipe)).thenReturn(Completable.complete());
+        homeVM.saveRecipeAsFavorite(presentationRecipe);
 
-        homeVM.getSaveRecipeStatus()
-                .observeForever(Assert::assertTrue);
+        verify(saveRecipeTask).run(completableCaptor.capture(), eq(domainRecipe));
+        completableCaptor.getValue().onComplete();
+
+        assertEquals(homeVM.getSaveRecipeStatus().getValue(), true);
+    }
+
+    @Test
+    public void testSaveRecipeAsFavoriteFAILURE() {
+        PresentationRecipe presentationRecipe = Generator.generateRecipe("01");
+        DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
         homeVM.saveRecipeAsFavorite(presentationRecipe);
+
+        verify(saveRecipeTask).run(completableCaptor.capture(), eq(domainRecipe));
+        completableCaptor.getValue().onError(new Throwable());
+
+        assertEquals(false, homeVM.getSaveRecipeStatus().getValue());
     }
 
     @Test
@@ -128,15 +110,24 @@ public class HomeVMTest {
         PresentationRecipe presentationRecipe = Generator.generateRecipe("01");
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
-        when(deleteRecipeTask.run(domainRecipe)).thenReturn(Completable.complete().subscribeOn
-                (Schedulers.trampoline()).observeOn(Schedulers.trampoline()));
+        homeVM.deleteRecipeFromFavorite(presentationRecipe);
 
-        homeVM.getDeleteRecipeStatus()
-                .observeForever(aBoolean -> {
-                    System.out.println("testDeleteRecipeFromFavorite Observe: called");
-                    assertEquals("testDeleteRecipeFromFavorite", true, aBoolean);
-                });
+        verify(deleteRecipeTask).run(completableCaptor.capture(), eq(domainRecipe));
+        completableCaptor.getValue().onComplete();
+
+        assertEquals(true, homeVM.getDeleteRecipeStatus().getValue());
+    }
+
+    @Test
+    public void testDeleteRecipeFromFavoriteFAILURE() {
+        PresentationRecipe presentationRecipe = Generator.generateRecipe("01");
+        DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
         homeVM.deleteRecipeFromFavorite(presentationRecipe);
+
+        verify(deleteRecipeTask).run(completableCaptor.capture(), eq(domainRecipe));
+        completableCaptor.getValue().onError(new Throwable());
+
+        assertEquals(false, homeVM.getDeleteRecipeStatus().getValue());
     }
 }
