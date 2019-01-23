@@ -14,14 +14,16 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Module
-abstract class NetworkModule {
+@Module(includes = NetworkModule.Binders.class)
+class NetworkModule {
 
-    @Binds
-    abstract RemoteDataSource bindNetworkDataSource(NetworkDataSource networkDataSource);
+    interface Binders {
+        @Binds
+        RemoteDataSource bindNetworkDataSource(NetworkDataSource networkDataSource);
 
-    @Binds
-    abstract NetworkMapper<DataRecipe> bindsNetworkDataMapper(NetworkDataMapper mapper);
+        @Binds
+        NetworkMapper<DataRecipe> bindsNetworkDataMapper(NetworkDataMapper mapper);
+    }
 
     @Provides
     RecipeService providesRecipeService(Retrofit retrofit) {
@@ -29,7 +31,7 @@ abstract class NetworkModule {
     }
 
     @Provides
-    Retrofit providesRetrofitBuilder() {
+    Retrofit providesRetrofit() {
         return new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
