@@ -96,12 +96,12 @@ public class FavoritesVM {
 
         @Override
         public void onComplete() {
-            status.postValue(true);
+            status.setValue(true);
         }
 
         @Override
         public void onError(Throwable e) {
-            status.postValue(false);
+            status.setValue(false);
         }
     }
 
