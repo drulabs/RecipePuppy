@@ -35,7 +35,6 @@ public class HomeVM extends ViewModel {
     private DeleteRecipeTask deleteRecipeTask;
     private GetRecipesTask getRecipesTask;
 
-    @Inject
     public HomeVM(PresentationMapper<DomainRecipe> mapper,
                   GetRecipesTask getRecipesTask,
                   SaveRecipeTask saveRecipeTask,

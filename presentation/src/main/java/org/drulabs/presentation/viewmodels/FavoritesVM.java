@@ -2,6 +2,7 @@ package org.drulabs.presentation.viewmodels;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
 
 import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.usecases.DeleteAllRecipesTask;
@@ -15,13 +16,11 @@ import org.drulabs.presentation.mapper.PresentationMapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 
-public class FavoritesVM {
+public class FavoritesVM extends ViewModel {
 
     private MutableLiveData<Model<List<PresentationRecipe>>> savedRecipes = new MutableLiveData<>();
     private MutableLiveData<Model<PresentationRecipe>> lastSavedRecipe = new MutableLiveData<>();
@@ -36,7 +35,6 @@ public class FavoritesVM {
 
     private PresentationMapper<DomainRecipe> mapper;
 
-    @Inject
     public FavoritesVM(PresentationMapper<DomainRecipe> mapper,
                        GetSavedRecipesTask getSavedRecipesTask,
                        GetLastSavedRecipeTask getLastSavedRecipeTask,
