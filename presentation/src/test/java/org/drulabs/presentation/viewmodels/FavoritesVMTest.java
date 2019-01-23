@@ -9,7 +9,7 @@ import org.drulabs.domain.usecases.GetLastSavedRecipeTask;
 import org.drulabs.domain.usecases.GetSavedRecipesTask;
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.mapper.PresentationMapper;
-import org.drulabs.presentation.mapper.PresentattionDomainMapper;
+import org.drulabs.presentation.mapper.PresentationDomainMapper;
 import org.drulabs.presentation.utils.Generator;
 import org.junit.Before;
 import org.junit.Rule;
@@ -36,7 +36,7 @@ public class FavoritesVMTest {
     @Rule
     public TestRule rule = new InstantTaskExecutorRule();
 
-    private PresentationMapper<DomainRecipe> mapper = new PresentattionDomainMapper();
+    private PresentationMapper<DomainRecipe> mapper = new PresentationDomainMapper();
 
     @Mock
     private GetSavedRecipesTask getSavedRecipesTask;

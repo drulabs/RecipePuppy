@@ -6,7 +6,7 @@ import org.drulabs.presentation.entities.PresentationRecipe;
 import java.util.Arrays;
 import java.util.List;
 
-public class PresentattionDomainMapper implements PresentationMapper<DomainRecipe> {
+public class PresentationDomainMapper implements PresentationMapper<DomainRecipe> {
 
     @Override
     public PresentationRecipe mapFrom(DomainRecipe domainRecipe) {
