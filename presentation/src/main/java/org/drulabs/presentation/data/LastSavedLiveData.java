@@ -11,11 +11,11 @@ import io.reactivex.observers.DisposableSingleObserver;
 
 public class LastSavedLiveData extends SingleLiveEvent<Model<PresentationRecipe>> {
 
-    private SingleUseCase<PresentationRecipe, Void> singleUseCase;
+    private SingleUseCase<DomainRecipe, Void> singleUseCase;
     private PresentationMapper<DomainRecipe> mapper;
 
     public LastSavedLiveData(@NonNull PresentationMapper<DomainRecipe> mapper,
-                             @NonNull SingleUseCase<PresentationRecipe, Void> singleUseCase) {
+                             @NonNull SingleUseCase<DomainRecipe, Void> singleUseCase) {
         this.mapper = mapper;
         this.singleUseCase = singleUseCase;
     }

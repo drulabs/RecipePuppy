@@ -24,6 +24,8 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
+
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -72,14 +74,14 @@ public class FavoritesVMTest {
         PresentationRecipe presentationRecipe = Generator.generateRecipe("dsds");
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
-        favoritesVM.fetchSavedRecipes();
+        LiveData<Model<List<PresentationRecipe>>> savedRecipes = favoritesVM.getSavedRecipes();
+        savedRecipes.observeForever(listModel -> System.out.println("ignore"));
 
         verify(getSavedRecipesTask).run(observableCaptor.capture(), eq(null));
         observableCaptor.getValue().onNext(domainRecipe);
         observableCaptor.getValue().onComplete();
 
-        assertEquals(favoritesVM.getSavedRecipesData().getValue().getData().get(0),
-                presentationRecipe);
+        assertEquals(savedRecipes.getValue().getData().get(0), presentationRecipe);
     }
 
     @Test
@@ -87,7 +89,7 @@ public class FavoritesVMTest {
         PresentationRecipe presentationRecipe = Generator.generateRecipe("dsds");
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
-        LiveData<Model<PresentationRecipe>> lastRecipe = favoritesVM.fetchLastSavedRecipe();
+        LiveData<Model<PresentationRecipe>> lastRecipe = favoritesVM.getLastSavedRecipe();
         lastRecipe.observeForever(presentationRecipeModel -> System.out.println("ignore"));
 
         verify(getLastSavedRecipeTask).run(singleCaptor.capture(), eq(null));
