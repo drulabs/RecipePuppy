@@ -41,7 +41,8 @@ public class RecipeRepositoryImpl implements RecipeRepository {
                                     } else {
                                         return domainRecipe;
                                     }
-                                }).toObservable());
+                                }).onErrorReturn(throwable -> domainRecipe)
+                                .toObservable());
 
     }
 

@@ -6,7 +6,13 @@ import org.drulabs.domain.entities.DomainRecipe;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class DataDomainMapper implements DataMapper<DomainRecipe> {
+
+    @Inject
+    public DataDomainMapper() {
+    }
 
     @Override
     public DomainRecipe mapTo(DataRecipe dataRecipe) {

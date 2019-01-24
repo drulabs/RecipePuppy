@@ -17,6 +17,7 @@ import dagger.Provides;
 @Module(includes = PersistenceModule.Binders.class)
 class PersistenceModule {
 
+    @Module
     interface Binders {
         @Binds
         LocalDataSource bindsLocalDataSource(LocalDataSourceImpl localDataSourceImpl);

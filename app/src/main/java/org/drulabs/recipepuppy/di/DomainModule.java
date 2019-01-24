@@ -10,16 +10,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 @Module
-@Singleton
 class DomainModule {
 
     @Provides
+    @Singleton
     @Named("execution")
     Scheduler providesExecutionScheduler() {
         return Schedulers.io();
     }
 
     @Provides
+    @Singleton
     @Named("postExecution")
     Scheduler providesPostExecutionScheduler() {
         return AndroidSchedulers.mainThread();

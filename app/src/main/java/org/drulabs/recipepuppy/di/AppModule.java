@@ -3,30 +3,36 @@ package org.drulabs.recipepuppy.di;
 import android.app.Application;
 import android.content.Context;
 
-import javax.inject.Singleton;
+import org.drulabs.recipepuppy.MainActivity;
 
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
+import dagger.android.ContributesAndroidInjector;
 
 @Module
-@Singleton
-public class AppModule {
+abstract class AppModule {
 
-    private Application application;
+    @Binds
+    abstract Context bindContext(Application application);
 
-    public AppModule(Application application) {
-        this.application = application;
-    }
+    @ContributesAndroidInjector
+    abstract MainActivity contributesMainActivity();
 
-    @Provides
-    @Singleton
-    public Application getApplication() {
-        return application;
-    }
+//    private Application application;
+//
+//    public AppModule(Application application) {
+//        this.application = application;
+//    }
+//
+//    @Provides
+//    @Singleton
+//    public Application getApplication() {
+//        return application;
+//    }
 
-    @Provides
-    @Singleton
-    public Context getApplicationContext() {
-        return application.getApplicationContext();
-    }
+//    @Provides
+//    @Singleton
+//    public Context getApplicationContext() {
+//        return application.getApplicationContext();
+//    }
 }

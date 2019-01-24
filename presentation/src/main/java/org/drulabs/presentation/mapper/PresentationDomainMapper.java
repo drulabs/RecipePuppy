@@ -6,7 +6,13 @@ import org.drulabs.presentation.entities.PresentationRecipe;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class PresentationDomainMapper implements PresentationMapper<DomainRecipe> {
+
+    @Inject
+    public PresentationDomainMapper() {
+    }
 
     @Override
     public PresentationRecipe mapFrom(DomainRecipe domainRecipe) {

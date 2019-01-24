@@ -19,10 +19,11 @@ import dagger.Provides;
 @Module(includes = PresentationModule.Binder.class)
 class PresentationModule {
 
+    @Module
     interface Binder {
 
         @Binds
-        PresentationMapper<DomainModule> bindsPresentationDomainMapper(PresentationDomainMapper mapper);
+        PresentationMapper<DomainRecipe> bindsPresentationDomainMapper(PresentationDomainMapper mapper);
     }
 
     @Provides

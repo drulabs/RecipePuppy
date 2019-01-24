@@ -17,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module(includes = NetworkModule.Binders.class)
 class NetworkModule {
 
+    @Module
     interface Binders {
         @Binds
         RemoteDataSource bindNetworkDataSource(NetworkDataSource networkDataSource);

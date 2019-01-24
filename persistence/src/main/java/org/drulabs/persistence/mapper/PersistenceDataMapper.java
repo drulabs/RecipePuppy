@@ -3,7 +3,13 @@ package org.drulabs.persistence.mapper;
 import org.drulabs.data.entities.DataRecipe;
 import org.drulabs.persistence.entities.DBRecipe;
 
+import javax.inject.Inject;
+
 public class PersistenceDataMapper implements PersistenceMapper<DataRecipe> {
+
+    @Inject
+    public PersistenceDataMapper() {
+    }
 
     @Override
     public DBRecipe mapFrom(DataRecipe dataRecipe) {
