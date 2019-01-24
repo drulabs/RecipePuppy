@@ -14,10 +14,7 @@ import org.drulabs.presentation.data.RecipesLiveData;
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.mapper.PresentationMapper;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.observers.DisposableSingleObserver;
 
 public class HomeVM extends ViewModel {
 

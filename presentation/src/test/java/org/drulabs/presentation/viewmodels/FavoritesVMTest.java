@@ -1,15 +1,17 @@
 package org.drulabs.presentation.viewmodels;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
+import android.arch.lifecycle.LiveData;
 
 import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.usecases.DeleteAllRecipesTask;
 import org.drulabs.domain.usecases.DeleteRecipeTask;
 import org.drulabs.domain.usecases.GetLastSavedRecipeTask;
 import org.drulabs.domain.usecases.GetSavedRecipesTask;
+import org.drulabs.presentation.data.Model;
 import org.drulabs.presentation.entities.PresentationRecipe;
-import org.drulabs.presentation.mapper.PresentationMapper;
 import org.drulabs.presentation.mapper.PresentationDomainMapper;
+import org.drulabs.presentation.mapper.PresentationMapper;
 import org.drulabs.presentation.utils.Generator;
 import org.junit.Before;
 import org.junit.Rule;
@@ -85,34 +87,37 @@ public class FavoritesVMTest {
         PresentationRecipe presentationRecipe = Generator.generateRecipe("dsds");
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
-        favoritesVM.fetchLastSavedRecipe();
+        LiveData<Model<PresentationRecipe>> lastRecipe = favoritesVM.fetchLastSavedRecipe();
+        lastRecipe.observeForever(presentationRecipeModel -> System.out.println("ignore"));
 
         verify(getLastSavedRecipeTask).run(singleCaptor.capture(), eq(null));
         singleCaptor.getValue().onSuccess(domainRecipe);
 
-        assertEquals(favoritesVM.getLastSavedRecipe().getValue().getData(), presentationRecipe);
+        assertEquals(lastRecipe.getValue().getData(), presentationRecipe);
     }
 
     @Test
     public void testDeleteAllRecipes() {
 
-        favoritesVM.deleteAllFavoriteRecipes();
+        LiveData<Boolean> status = favoritesVM.deleteAllFavoriteRecipes();
+        status.observeForever(aBoolean -> System.out.println("ignore"));
 
         verify(deleteAllRecipesTask).run(completableCaptor.capture(), eq(null));
         completableCaptor.getValue().onComplete();
 
-        assertEquals(true, favoritesVM.getDeleteAllRecipeStatus().getValue());
+        assertEquals(true, status.getValue());
     }
 
     @Test
     public void testDeleteAllRecipesFAILURE() {
 
-        favoritesVM.deleteAllFavoriteRecipes();
+        LiveData<Boolean> status = favoritesVM.deleteAllFavoriteRecipes();
+        status.observeForever(aBoolean -> System.out.println("ignore"));
 
         verify(deleteAllRecipesTask).run(completableCaptor.capture(), eq(null));
         completableCaptor.getValue().onError(new Exception());
 
-        assertEquals(false, favoritesVM.getDeleteAllRecipeStatus().getValue());
+        assertEquals(false, status.getValue());
     }
 
     @Test
@@ -120,12 +125,13 @@ public class FavoritesVMTest {
         PresentationRecipe presentationRecipe = Generator.generateRecipe("01");
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
-        favoritesVM.deleteRecipeFromFavorite(presentationRecipe);
+        LiveData<Boolean> status = favoritesVM.deleteRecipeFromFavorite(presentationRecipe);
+        status.observeForever(aBoolean -> System.out.println("ignore"));
 
         verify(deleteRecipeTask).run(completableCaptor.capture(), eq(domainRecipe));
         completableCaptor.getValue().onComplete();
 
-        assertEquals(true, favoritesVM.getDeleteRecipeStatus().getValue());
+        assertEquals(true, status.getValue());
     }
 
     @Test
@@ -133,12 +139,13 @@ public class FavoritesVMTest {
         PresentationRecipe presentationRecipe = Generator.generateRecipe("01");
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
-        favoritesVM.deleteRecipeFromFavorite(presentationRecipe);
+        LiveData<Boolean> status = favoritesVM.deleteRecipeFromFavorite(presentationRecipe);
+        status.observeForever(aBoolean -> System.out.println("ignore"));
 
         verify(deleteRecipeTask).run(completableCaptor.capture(), eq(domainRecipe));
         completableCaptor.getValue().onError(new Exception());
 
-        assertEquals(false, favoritesVM.getDeleteRecipeStatus().getValue());
+        assertEquals(false, status.getValue());
     }
 
 }
