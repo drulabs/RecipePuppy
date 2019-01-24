@@ -1,4 +1,4 @@
-package org.drulabs.presentation.viewmodels;
+package org.drulabs.presentation.data;
 
 public class Model<T> {
 
@@ -25,15 +25,15 @@ public class Model<T> {
     }
 
     // Generators
-    static <E> Model<E> success(E e) {
+    public static <E> Model<E> success(E e) {
         return new Model<>(false, null, e);
     }
 
-    static <E> Model<E> error(Throwable throwable) {
+    public static <E> Model<E> error(Throwable throwable) {
         return new Model<>(false, throwable, null);
     }
 
-    static <E> Model<E> loading(boolean loadingStatus) {
+    public static <E> Model<E> loading(boolean loadingStatus) {
         return new Model<>(loadingStatus, null, null);
     }
 }

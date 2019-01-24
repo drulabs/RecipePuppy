@@ -10,6 +10,7 @@ import org.drulabs.domain.usecases.DeleteRecipeTask;
 import org.drulabs.domain.usecases.GetLastSavedRecipeTask;
 import org.drulabs.domain.usecases.GetSavedRecipesTask;
 import org.drulabs.presentation.custom.SingleLiveEvent;
+import org.drulabs.presentation.data.Model;
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.mapper.PresentationMapper;
 
