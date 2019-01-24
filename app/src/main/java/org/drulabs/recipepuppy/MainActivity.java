@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         tvHola = findViewById(R.id.text1);
 
         homeVM = ViewModelProviders.of(this, vmFactory).get(HomeVM.class);
-        homeVM.getRecipesLiveData().observe(this, listModel -> {
+
+        homeVM.searchRecipes("pasta", 2).observe(this, listModel -> {
             Log.d(TAG, "onCreate: Data received");
             if (listModel != null) {
                 if (!listModel.isLoading() && listModel.getError() == null) {
@@ -45,6 +46,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        homeVM.searchRecipes("pasta", 2);
     }
 }
