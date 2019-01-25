@@ -1,4 +1,4 @@
-package org.drulabs.recipepuppy;
+package org.drulabs.recipepuppy.ui.home;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -8,14 +8,15 @@ import android.widget.TextView;
 
 import org.drulabs.presentation.factory.HomeVMFactory;
 import org.drulabs.presentation.viewmodels.HomeVM;
+import org.drulabs.recipepuppy.R;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "HomeActivity";
 
     @Inject
     HomeVMFactory vmFactory;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeVM = ViewModelProviders.of(this, vmFactory).get(HomeVM.class);
 
-        homeVM.searchRecipes("pasta", 2).observe(this, listModel -> {
+        homeVM.getRecipesLiveData().observe(this, listModel -> {
             Log.d(TAG, "onCreate: Data received");
             if (listModel != null) {
                 if (!listModel.isLoading() && listModel.getError() == null) {
@@ -46,5 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        homeVM.searchRecipes("pasta", 2);
     }
 }

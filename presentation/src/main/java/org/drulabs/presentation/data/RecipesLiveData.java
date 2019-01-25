@@ -19,7 +19,7 @@ public class RecipesLiveData extends LiveData<Model<List<PresentationRecipe>>> {
 
     private static final long DELAY_FOR_DISPOSE = 2000;
     private static final String DEFAULT_SEARCH_TERM = "pasta";
-    private static final int DEFAULT_PAGE_NUM = 2;
+    private static final int DEFAULT_PAGE_NUM = 4;
 
     private GetRecipesTask getRecipesTask;
     private PresentationMapper<DomainRecipe> mapper;

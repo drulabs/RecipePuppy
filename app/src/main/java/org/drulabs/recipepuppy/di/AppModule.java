@@ -3,7 +3,7 @@ package org.drulabs.recipepuppy.di;
 import android.app.Application;
 import android.content.Context;
 
-import org.drulabs.recipepuppy.MainActivity;
+import org.drulabs.recipepuppy.ui.home.HomeActivity;
 
 import dagger.Binds;
 import dagger.Module;
@@ -16,7 +16,7 @@ abstract class AppModule {
     abstract Context bindContext(Application application);
 
     @ContributesAndroidInjector
-    abstract MainActivity contributesMainActivity();
+    abstract HomeActivity contributesMainActivity();
 
 //    private Application application;
 //
