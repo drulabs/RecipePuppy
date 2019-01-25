@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:layout_margin="@dimen/margin_small"
     android:background="@drawable/bg_rounded"
     android:elevation="@dimen/margin_small">
@@ -35,21 +35,26 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
         android:gravity="center"
+        android:textColor="#010101"
         android:textSize="20sp"
         android:textStyle="bold|italic"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_recipe"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Chicken Pesto Pasta" />
+        tools:text="Garlic Pesto Pasta" />
 
     <com.pchmn.materialchips.ChipsInput
         android:id="@+id/chips_ingredients"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:focusable="false"
+        android:saveEnabled="false"
+        android:focusableInTouchMode="false"
         app:chip_deletable="false"
         app:chip_hasAvatarIcon="false"
         app:chip_labelColor="#ABABAB"
@@ -57,7 +62,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_recipe"
         app:layout_constraintTop_toBottomOf="@+id/tvRecipeName"
-        app:maxRows="4"
-        app:textColor="#232323" />
+        app:textColor="#121212" />
 
 </android.support.constraint.ConstraintLayout>

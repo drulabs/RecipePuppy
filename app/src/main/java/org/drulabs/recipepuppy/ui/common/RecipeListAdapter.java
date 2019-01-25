@@ -25,7 +25,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         recipes = new ArrayList<>();
     }
 
-    void populateRecipes(List<PresentationRecipe> recipes) {
+    public void populateRecipes(List<PresentationRecipe> recipes) {
         this.recipes.clear();
         this.recipes.addAll(recipes);
         notifyDataSetChanged();

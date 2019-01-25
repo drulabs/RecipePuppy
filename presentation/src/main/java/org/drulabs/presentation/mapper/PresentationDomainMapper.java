@@ -10,6 +10,9 @@ import javax.inject.Inject;
 
 public class PresentationDomainMapper implements PresentationMapper<DomainRecipe> {
 
+    private static final String DEFAULT_IMAGE = "https://drulabs.github" +
+            ".io/static/recipe/logo_tile.png";
+
     @Inject
     public PresentationDomainMapper() {
     }
@@ -17,8 +20,12 @@ public class PresentationDomainMapper implements PresentationMapper<DomainRecipe
     @Override
     public PresentationRecipe mapFrom(DomainRecipe domainRecipe) {
         List<String> ingredientList = Arrays.asList(domainRecipe.getIngredients().split(","));
+        String thumbnail = domainRecipe.getThumbnail();
+        if (thumbnail == null || thumbnail.trim().isEmpty()) {
+            thumbnail = DEFAULT_IMAGE;
+        }
         return (new PresentationRecipe(domainRecipe.getTitle(), domainRecipe.getHref(),
-                ingredientList, domainRecipe.getThumbnail(), domainRecipe.isStarred()));
+                ingredientList, thumbnail, domainRecipe.isStarred()));
     }
 
     @Override
