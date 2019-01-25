@@ -1,6 +1,9 @@
 package org.drulabs.presentation.viewmodels;
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import org.drulabs.domain.entities.DomainRecipe;
@@ -18,7 +21,8 @@ import java.util.List;
 
 public class HomeVM extends ViewModel {
 
-    private RecipesLiveData recipesLiveData;
+    private MutableLiveData<RecipeRequest> requestLiveData = new MutableLiveData<>();
+    private LiveData<Model<List<PresentationRecipe>>> recipesLiveData;
 
     private PresentationMapper<DomainRecipe> mapper;
 
@@ -33,13 +37,19 @@ public class HomeVM extends ViewModel {
         this.saveRecipeTask = saveRecipeTask;
         this.deleteRecipeTask = deleteRecipeTask;
 
-        this.recipesLiveData = new RecipesLiveData(mapper, getRecipesTask);
+        this.recipesLiveData = Transformations.switchMap(requestLiveData, input -> {
+            RecipesLiveData liveData = new RecipesLiveData(mapper, getRecipesTask);
+            liveData.setRecipeRequest(input);
+            return liveData;
+        });
     }
 
-    public LiveData<Model<List<PresentationRecipe>>> searchRecipes(
-            String searchText, int pageNum) {
+    public void searchRecipes(String searchText, int pageNum) {
         RecipeRequest request = new RecipeRequest(searchText, pageNum);
-        recipesLiveData.setRecipeRequest(request);
+        requestLiveData.setValue(request);
+    }
+
+    public LiveData<Model<List<PresentationRecipe>>> getRecipesLiveData() {
         return recipesLiveData;
     }
 

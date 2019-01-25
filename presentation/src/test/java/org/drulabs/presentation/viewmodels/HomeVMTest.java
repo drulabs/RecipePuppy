@@ -72,9 +72,9 @@ public class HomeVMTest {
 
         RecipeRequest request = new RecipeRequest("test", 1);
 
-        LiveData<Model<List<PresentationRecipe>>> recipes =
-                homeVM.searchRecipes(request.getSearchQuery(), request.getPageNum());
+        LiveData<Model<List<PresentationRecipe>>> recipes = homeVM.getRecipesLiveData();
         recipes.observeForever(listModel -> System.out.println("ignore observer"));
+        homeVM.searchRecipes(request.getSearchQuery(), request.getPageNum());
 
         verify(getRecipesTask).run(singleCaptor.capture(), eq(request));
         singleCaptor.getValue().onSuccess(dr);
