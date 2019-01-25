@@ -73,7 +73,7 @@ public class HomeVMTest {
         RecipeRequest request = new RecipeRequest("test", 1);
 
         LiveData<Model<List<PresentationRecipe>>> recipes = homeVM.getRecipesLiveData();
-        recipes.observeForever(listModel -> System.out.println("ignore observer"));
+        recipes.observeForever(Generator.generateMockObserver());
         homeVM.searchRecipes(request.getSearchQuery(), request.getPageNum());
 
         verify(getRecipesTask).run(singleCaptor.capture(), eq(request));
@@ -88,7 +88,7 @@ public class HomeVMTest {
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
         LiveData<Boolean> status = homeVM.saveRecipeAsFav(presentationRecipe);
-        status.observeForever(aBoolean -> System.out.println("ignore"));
+        status.observeForever(Generator.generateMockObserver());
 
         verify(saveRecipeTask).run(completableCaptor.capture(), eq(domainRecipe));
         completableCaptor.getValue().onComplete();
@@ -102,7 +102,7 @@ public class HomeVMTest {
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
         LiveData<Boolean> status = homeVM.saveRecipeAsFav(presentationRecipe);
-        status.observeForever(aBoolean -> System.out.println("ignore"));
+        status.observeForever(Generator.generateMockObserver());
 
         verify(saveRecipeTask).run(completableCaptor.capture(), eq(domainRecipe));
         completableCaptor.getValue().onError(new Throwable());
@@ -116,7 +116,7 @@ public class HomeVMTest {
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
         LiveData<Boolean> status = homeVM.deleteRecipeFromFav(presentationRecipe);
-        status.observeForever(aBoolean -> System.out.println("ignore"));
+        status.observeForever(Generator.generateMockObserver());
 
         verify(deleteRecipeTask).run(completableCaptor.capture(), eq(domainRecipe));
         completableCaptor.getValue().onComplete();
@@ -130,7 +130,7 @@ public class HomeVMTest {
         DomainRecipe domainRecipe = mapper.mapTo(presentationRecipe);
 
         LiveData<Boolean> status = homeVM.deleteRecipeFromFav(presentationRecipe);
-        status.observeForever(aBoolean -> System.out.println("ignore"));
+        status.observeForever(Generator.generateMockObserver());
 
         verify(deleteRecipeTask).run(completableCaptor.capture(), eq(domainRecipe));
         completableCaptor.getValue().onError(new Throwable());

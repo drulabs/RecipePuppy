@@ -1,5 +1,7 @@
 package org.drulabs.presentation.utils;
 
+import android.arch.lifecycle.Observer;
+
 import org.drulabs.presentation.entities.PresentationRecipe;
 
 import java.util.Arrays;
@@ -14,6 +16,11 @@ public class Generator {
         List<String> ingredientList = Arrays.asList("raw chicken", "green curry", identifier);
 
         return (new PresentationRecipe(name, detailsUrl, ingredientList, thumbNailUrl, false));
+    }
+
+    public static <T> Observer<T> generateMockObserver() {
+        return t -> {
+        };
     }
 
 }
