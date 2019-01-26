@@ -1,7 +1,8 @@
 package org.drulabs.recipepuppy.ui.common;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import com.google.android.material.chip.ChipGroup;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.pchmn.materialchips.ChipsInput;
+import com.google.android.material.chip.Chip;
 
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.recipepuppy.R;
@@ -53,13 +54,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     class RecipeVH extends RecyclerView.ViewHolder {
         ImageView imgRecipe;
         TextView tvRecipeName;
-        ChipsInput ingredientChips;
+        ChipGroup ingredientChipsGroup;
 
         RecipeVH(@NonNull View itemView) {
             super(itemView);
             imgRecipe = itemView.findViewById(R.id.img_recipe);
             tvRecipeName = itemView.findViewById(R.id.tvRecipeName);
-            ingredientChips = itemView.findViewById(R.id.chips_ingredients);
+            ingredientChipsGroup = itemView.findViewById(R.id.ingredients_chips_group);
         }
 
         void bind(PresentationRecipe recipe) {
@@ -68,7 +69,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                     .into(imgRecipe);
             tvRecipeName.setText(recipe.getName());
             for (String ingredient : recipe.getIngredientList()) {
-                ingredientChips.addChip(ingredient, "ingredient");
+                Chip ingredientChip = new Chip(itemView.getContext());
+                ingredientChip.setText(ingredient);
+                ingredientChipsGroup.addView(ingredientChip);
             }
         }
     }

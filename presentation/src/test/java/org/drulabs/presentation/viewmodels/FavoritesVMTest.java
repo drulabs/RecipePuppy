@@ -1,7 +1,7 @@
 package org.drulabs.presentation.viewmodels;
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.lifecycle.LiveData;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.LiveData;
 
 import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.usecases.DeleteAllRecipesTask;

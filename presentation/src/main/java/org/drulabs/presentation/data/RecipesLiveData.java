@@ -1,6 +1,6 @@
 package org.drulabs.presentation.data;
 
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import android.os.Handler;
 
 import org.drulabs.domain.entities.DomainRecipe;

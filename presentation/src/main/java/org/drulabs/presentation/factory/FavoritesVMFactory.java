@@ -1,8 +1,8 @@
 package org.drulabs.presentation.factory;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.annotation.NonNull;
 
 import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.usecases.DeleteAllRecipesTask;

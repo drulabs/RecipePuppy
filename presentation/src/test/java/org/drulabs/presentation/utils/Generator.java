@@ -1,6 +1,6 @@
 package org.drulabs.presentation.utils;
 
-import android.arch.lifecycle.Observer;
+import androidx.lifecycle.Observer;
 
 import org.drulabs.presentation.entities.PresentationRecipe;
 
