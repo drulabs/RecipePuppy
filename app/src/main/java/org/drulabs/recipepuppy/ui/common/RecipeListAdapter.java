@@ -35,11 +35,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         notifyDataSetChanged();
     }
 
-    public void updateRecipe(int index, PresentationRecipe recipe) {
-        recipes.set(index, recipe);
-        notifyDataSetChanged();
-    }
-
     @NonNull
     @Override
     public RecipeVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,7 +46,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     @Override
     public void onBindViewHolder(@NonNull RecipeVH recipeVH, int index) {
         PresentationRecipe recipe = recipes.get(index);
-        recipeVH.bind(index, recipe);
+        recipeVH.bind(recipe);
     }
 
     @Override
@@ -72,7 +67,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             ingredientChipsGroup = itemView.findViewById(R.id.ingredients_chips_group);
         }
 
-        void bind(int index, PresentationRecipe recipe) {
+        void bind(PresentationRecipe recipe) {
             GlideApp.with(itemView)
                     .load(recipe.getThumbnailUrl())
                     .placeholder(R.drawable.logo_tile)
@@ -84,8 +79,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                 imgStar.setImageResource(R.drawable.ic_star_white_mono);
             }
 
-            imgStar.setOnClickListener(v -> listener.onStarTapped(index, recipe));
-            imgRecipe.setOnClickListener(v -> listener.onRecipeItemTapped(index, recipe));
+            imgStar.setOnClickListener(v -> listener.onStarTapped(recipe));
+            imgRecipe.setOnClickListener(v -> listener.onRecipeItemTapped(recipe));
 
             tvRecipeName.setText(recipe.getName());
             ingredientChipsGroup.removeAllViews();
@@ -99,9 +94,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
     public interface ItemClickListener {
-        void onRecipeItemTapped(int index, PresentationRecipe recipe);
+        void onRecipeItemTapped(PresentationRecipe recipe);
 
-        void onStarTapped(int index, PresentationRecipe recipe);
+        void onStarTapped(PresentationRecipe recipe);
     }
 
 }

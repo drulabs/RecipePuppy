@@ -169,7 +169,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     @Override
-    public void onRecipeItemTapped(int index, PresentationRecipe recipe) {
+    public void onRecipeItemTapped(PresentationRecipe recipe) {
         final String recipePuppyURL = recipe.getDetailsUrl();
         Intent openUrlIntent = new Intent(Intent.ACTION_VIEW);
         openUrlIntent.setData(Uri.parse(recipePuppyURL));
@@ -177,7 +177,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     @Override
-    public void onStarTapped(int index, PresentationRecipe recipe) {
+    public void onStarTapped(PresentationRecipe recipe) {
         LiveData<Boolean> status;
         if (recipe.isFavorite()) {
             status = homeVM.deleteRecipeFromFav(recipe);
@@ -188,8 +188,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         status.observe(this, operationStatus -> {
             hideLoader();
             if (operationStatus) {
-                recipe.setFavorite(!recipe.isFavorite());
-                recipeAdapter.updateRecipe(index, recipe);
+                search(searchQuery, currentPageNumber);
             } else {
                 Toast.makeText(this, getString(R.string.something_went_wrong),
                         Toast.LENGTH_SHORT).show();
