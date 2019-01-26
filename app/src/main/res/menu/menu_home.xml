@@ -10,6 +10,11 @@
         app:showAsAction="collapseActionView|ifRoom" />
 
     <item
+        android:id="@+id/action_favorite_recipes"
+        android:title="@string/nav_favorites_title"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/action_about_recipe_puppy"
         android:title="@string/about_recipe_puppy"
         app:showAsAction="never"/>

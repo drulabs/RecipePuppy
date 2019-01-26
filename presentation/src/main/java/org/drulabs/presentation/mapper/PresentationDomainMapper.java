@@ -10,8 +10,7 @@ import javax.inject.Inject;
 
 public class PresentationDomainMapper implements PresentationMapper<DomainRecipe> {
 
-    private static final String DEFAULT_IMAGE = "https://drulabs.github" +
-            ".io/static/recipe/logo_tile.png";
+    private static final String DEFAULT_IMAGE = "https://drulabs.github.io/static/recipe/recipe_puppy_logo.png";
 
     @Inject
     public PresentationDomainMapper() {

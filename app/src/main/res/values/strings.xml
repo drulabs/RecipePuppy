@@ -7,4 +7,8 @@
     <string name="nav_next"><![CDATA[Next >]]></string>
     <string name="txt_sample_text">pasta</string>
     <string name="query_text_format">%s (%d)</string>
+    <string name="something_went_wrong">Something went wrong, please try again</string>
+    <string name="txt_no_data">No more data to display</string>
+    <string name="nav_favorites_title">Starred</string>
+    <string name="txt_star">star</string>
 </resources>

@@ -64,6 +64,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
 
     // Custom UI
+    implementation 'com.mikhaellopez:circularimageview:3.2.0'
 
     // Image loading
     implementation 'com.github.bumptech.glide:glide:4.8.0'

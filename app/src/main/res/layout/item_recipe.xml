@@ -9,19 +9,20 @@
     android:elevation="@dimen/margin_small"
     android:paddingBottom="8dp">
 
-    <ImageView
+    <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/img_recipe"
         android:layout_width="120dp"
-        android:layout_height="80dp"
+        android:layout_height="120dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/margin_small"
+        android:layout_margin="@dimen/margin_medium"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:adjustViewBounds="true"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
+        app:civ_border_color="#454545"
+        app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -62,5 +63,17 @@
         app:layout_constraintTop_toBottomOf="@+id/tvRecipeName">
 
     </com.google.android.material.chip.ChipGroup>
+
+    <ImageView
+        android:id="@+id/img_star"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/txt_star"
+        app:srcCompat="@drawable/ic_star_white_mono" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

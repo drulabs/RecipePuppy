@@ -1,6 +1,5 @@
 package org.drulabs.presentation.data;
 
-import androidx.lifecycle.LiveData;
 import android.os.Handler;
 
 import org.drulabs.domain.entities.DomainRecipe;
@@ -11,6 +10,7 @@ import org.drulabs.presentation.mapper.PresentationMapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import io.reactivex.observers.DisposableObserver;
 
 public class SavedRecipesLiveData extends LiveData<Model<List<PresentationRecipe>>> {
@@ -43,6 +43,9 @@ public class SavedRecipesLiveData extends LiveData<Model<List<PresentationRecipe
             disposerHandler.removeCallbacks(disposer);
         } else {
             postValue(Model.loading(true));
+            if (disposableObserver.isDisposed()) {
+                disposableObserver = new SavedRecipesObserver();
+            }
             getSavedRecipesTask.run(disposableObserver, null);
         }
         isDisposePending = false;

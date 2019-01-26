@@ -22,14 +22,21 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeVH> {
 
     private List<PresentationRecipe> recipes;
+    private ItemClickListener listener;
 
-    public RecipeListAdapter() {
-        recipes = new ArrayList<>();
+    public RecipeListAdapter(ItemClickListener clickListener) {
+        this.recipes = new ArrayList<>();
+        this.listener = clickListener;
     }
 
     public void populateRecipes(List<PresentationRecipe> recipes) {
         this.recipes.clear();
         this.recipes.addAll(recipes);
+        notifyDataSetChanged();
+    }
+
+    public void updateRecipe(int index, PresentationRecipe recipe) {
+        recipes.set(index, recipe);
         notifyDataSetChanged();
     }
 
@@ -44,7 +51,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     @Override
     public void onBindViewHolder(@NonNull RecipeVH recipeVH, int index) {
         PresentationRecipe recipe = recipes.get(index);
-        recipeVH.bind(recipe);
+        recipeVH.bind(index, recipe);
     }
 
     @Override
@@ -53,29 +60,48 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
     class RecipeVH extends RecyclerView.ViewHolder {
-        ImageView imgRecipe;
+        ImageView imgRecipe, imgStar;
         TextView tvRecipeName;
         ChipGroup ingredientChipsGroup;
 
         RecipeVH(@NonNull View itemView) {
             super(itemView);
             imgRecipe = itemView.findViewById(R.id.img_recipe);
+            imgStar = itemView.findViewById(R.id.img_star);
             tvRecipeName = itemView.findViewById(R.id.tvRecipeName);
             ingredientChipsGroup = itemView.findViewById(R.id.ingredients_chips_group);
         }
 
-        void bind(PresentationRecipe recipe) {
+        void bind(int index, PresentationRecipe recipe) {
             GlideApp.with(itemView)
                     .load(recipe.getThumbnailUrl())
+                    .placeholder(R.drawable.logo_tile)
                     .into(imgRecipe);
+
+            if (recipe.isFavorite()) {
+                imgStar.setImageResource(R.drawable.ic_star_mono);
+            } else {
+                imgStar.setImageResource(R.drawable.ic_star_white_mono);
+            }
+
+            imgStar.setOnClickListener(v -> listener.onStarTapped(index, recipe));
+            imgRecipe.setOnClickListener(v -> listener.onRecipeItemTapped(index, recipe));
+
             tvRecipeName.setText(recipe.getName());
             ingredientChipsGroup.removeAllViews();
+
             for (String ingredient : recipe.getIngredientList()) {
                 Chip ingredientChip = new Chip(itemView.getContext());
                 ingredientChip.setText(ingredient);
                 ingredientChipsGroup.addView(ingredientChip);
             }
         }
+    }
+
+    public interface ItemClickListener {
+        void onRecipeItemTapped(int index, PresentationRecipe recipe);
+
+        void onStarTapped(int index, PresentationRecipe recipe);
     }
 
 }
