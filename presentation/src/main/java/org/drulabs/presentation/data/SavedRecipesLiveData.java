@@ -25,7 +25,6 @@ public class SavedRecipesLiveData extends LiveData<Model<List<PresentationRecipe
     private Runnable disposer = new Runnable() {
         @Override
         public void run() {
-            getSavedRecipesTask.dispose();
             disposableObserver.dispose();
             isDisposePending = false;
         }

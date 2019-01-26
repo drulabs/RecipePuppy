@@ -1,6 +1,7 @@
 package org.drulabs.presentation.data;
 
 import androidx.lifecycle.LiveData;
+
 import android.os.Handler;
 
 import org.drulabs.domain.entities.DomainRecipe;
@@ -30,7 +31,6 @@ public class RecipesLiveData extends LiveData<Model<List<PresentationRecipe>>> {
     private Runnable disposer = new Runnable() {
         @Override
         public void run() {
-            getRecipesTask.dispose();
             disposableSingleObserver.dispose();
             isDisposePending = false;
         }
@@ -73,7 +73,6 @@ public class RecipesLiveData extends LiveData<Model<List<PresentationRecipe>>> {
                             PresentationRecipe presentationRecipe = mapper.mapFrom(d);
                             presentationRecipes.add(presentationRecipe);
                         }
-
                     }
                     postValue(Model.success(presentationRecipes));
                 }

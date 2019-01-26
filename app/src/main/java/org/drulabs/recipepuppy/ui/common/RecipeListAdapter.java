@@ -1,22 +1,23 @@
 package org.drulabs.recipepuppy.ui.common;
 
-import androidx.annotation.NonNull;
-import com.google.android.material.chip.ChipGroup;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.recipepuppy.R;
+import org.drulabs.recipepuppy.utils.GlideApp;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeVH> {
 
@@ -64,10 +65,11 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         }
 
         void bind(PresentationRecipe recipe) {
-            Glide.with(itemView)
+            GlideApp.with(itemView)
                     .load(recipe.getThumbnailUrl())
                     .into(imgRecipe);
             tvRecipeName.setText(recipe.getName());
+            ingredientChipsGroup.removeAllViews();
             for (String ingredient : recipe.getIngredientList()) {
                 Chip ingredientChip = new Chip(itemView.getContext());
                 ingredientChip.setText(ingredient);
