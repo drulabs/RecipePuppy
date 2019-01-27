@@ -10,23 +10,28 @@ public class CompletableLiveData<T> extends SingleLiveEvent<Boolean> {
 
     private CompletableUseCase<T> completableUseCase;
     private T input;
+    private BooleanObserver booleanObserver;
 
     public CompletableLiveData(@NonNull CompletableUseCase<T> completableUseCase, T input) {
         this.completableUseCase = completableUseCase;
         this.input = input;
+        this.booleanObserver = new BooleanObserver();
     }
 
     @Override
     protected void onActive() {
+        if (booleanObserver.isDisposed()) {
+            booleanObserver = new BooleanObserver();
+        }
         completableUseCase.run(booleanObserver, input);
     }
 
     @Override
     protected void onInactive() {
-        completableUseCase.dispose();
+        booleanObserver.dispose();
     }
 
-    private DisposableCompletableObserver booleanObserver = new DisposableCompletableObserver() {
+    private class BooleanObserver extends DisposableCompletableObserver {
         @Override
         public void onComplete() {
             setValue(true);
@@ -36,5 +41,5 @@ public class CompletableLiveData<T> extends SingleLiveEvent<Boolean> {
         public void onError(Throwable e) {
             setValue(false);
         }
-    };
+    }
 }

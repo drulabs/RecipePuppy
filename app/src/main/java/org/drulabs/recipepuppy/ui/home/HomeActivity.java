@@ -196,6 +196,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 Toast.makeText(this, getString(R.string.something_went_wrong),
                         Toast.LENGTH_SHORT).show();
             }
+            status.removeObservers(HomeActivity.this);
         });
     }
 

@@ -175,6 +175,7 @@ public class FavoritesActivity extends AppCompatActivity implements RecipeListAd
                     Toast.makeText(this, getString(R.string.something_went_wrong),
                             Toast.LENGTH_SHORT).show();
                 }
+                status.removeObservers(FavoritesActivity.this);
             });
         }
     }

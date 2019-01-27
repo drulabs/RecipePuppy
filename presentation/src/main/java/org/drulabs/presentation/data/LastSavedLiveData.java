@@ -13,35 +13,39 @@ public class LastSavedLiveData extends SingleLiveEvent<Model<PresentationRecipe>
 
     private SingleUseCase<DomainRecipe, Void> singleUseCase;
     private PresentationMapper<DomainRecipe> mapper;
+    private SingleObserver singleObserver;
 
     public LastSavedLiveData(@NonNull PresentationMapper<DomainRecipe> mapper,
                              @NonNull SingleUseCase<DomainRecipe, Void> singleUseCase) {
         this.mapper = mapper;
         this.singleUseCase = singleUseCase;
+        this.singleObserver = new SingleObserver();
     }
 
     @Override
     protected void onActive() {
         postValue(Model.loading(true));
+        if (singleObserver.isDisposed()) {
+            singleObserver = new SingleObserver();
+        }
         singleUseCase.run(singleObserver, null);
     }
 
     @Override
     protected void onInactive() {
-        singleUseCase.dispose();
+        singleObserver.dispose();
     }
 
-    private DisposableSingleObserver<DomainRecipe> singleObserver = new
-            DisposableSingleObserver<DomainRecipe>() {
-                @Override
-                public void onSuccess(DomainRecipe domainRecipe) {
-                    PresentationRecipe presentationRecipe = mapper.mapFrom(domainRecipe);
-                    postValue(Model.success(presentationRecipe));
-                }
+    private class SingleObserver extends DisposableSingleObserver<DomainRecipe> {
+        @Override
+        public void onSuccess(DomainRecipe domainRecipe) {
+            PresentationRecipe presentationRecipe = mapper.mapFrom(domainRecipe);
+            postValue(Model.success(presentationRecipe));
+        }
 
-                @Override
-                public void onError(Throwable e) {
-                    postValue(Model.error(e));
-                }
-            };
+        @Override
+        public void onError(Throwable e) {
+            postValue(Model.error(e));
+        }
+    }
 }
