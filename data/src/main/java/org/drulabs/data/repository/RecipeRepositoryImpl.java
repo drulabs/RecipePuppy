@@ -1,5 +1,6 @@
 package org.drulabs.data.repository;
 
+import org.drulabs.data.cache.InMemoryCache;
 import org.drulabs.data.entities.DataRecipe;
 import org.drulabs.data.mapper.DataMapper;
 import org.drulabs.domain.entities.DomainRecipe;
@@ -32,9 +33,24 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     @Override
     public Observable<DomainRecipe> getRecipes(String searchQuery, int pageNum) {
-        return remoteDataSource.getRecipes(searchQuery, pageNum)
-                .map(dataRecipe -> mapper.mapTo(dataRecipe))
-                .flatMap((Function<DomainRecipe, ObservableSource<DomainRecipe>>)
+
+        Observable<DataRecipe> dataRecipeObservable;
+        List<DataRecipe> cachedRecipes = InMemoryCache.getData(searchQuery, pageNum);
+        if (cachedRecipes != null) {
+            System.out.println("Remote source NOT invoked");
+            dataRecipeObservable = Observable.fromIterable(cachedRecipes);
+        } else {
+            dataRecipeObservable = remoteDataSource.getRecipes(searchQuery, pageNum);
+        }
+
+        return dataRecipeObservable
+                .map(dataRecipe -> {
+                    if (cachedRecipes == null) {
+                        // Populate memory cache
+                        InMemoryCache.addDataRecipe(searchQuery, pageNum, dataRecipe);
+                    }
+                    return mapper.mapTo(dataRecipe);
+                }).flatMap((Function<DomainRecipe, ObservableSource<DomainRecipe>>)
                         domainRecipe -> localDataSource.lookupRecipe(domainRecipe.getTitle())
                                 .map(dataRecipe -> {
                                     if (dataRecipe != null) {
