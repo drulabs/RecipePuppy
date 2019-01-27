@@ -9,6 +9,10 @@
     <string name="query_text_format">%s (%d)</string>
     <string name="something_went_wrong">Something went wrong, please try again</string>
     <string name="txt_no_data">No more data to display</string>
-    <string name="nav_favorites_title">Starred</string>
+    <string name="nav_favorites_title">Favorites</string>
     <string name="txt_star">star</string>
+    <string name="txt_favorites">Favorites</string>
+    <string name="txt_delete_all_favorites">Remove all</string>
+    <string name="txt_show_last_removed">Show Last Recipe</string>
+    <string name="txt_msg_successful">Operation successful</string>
 </resources>

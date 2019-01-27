@@ -13,6 +13,10 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -58,7 +62,7 @@ public class DataDomainRecipeRepositoryTest {
         TestObserver<DomainRecipe> testObserver = recipeRepository.getRecipes(searchQuery, pageNum)
                 .test();
 
-        testObserver.assertResult(
+        testObserver.assertValues(
                 mapper.mapTo(dataRecipe1),
                 mapper.mapTo(dataRecipe2),
                 mapper.mapTo(dataRecipe3)
@@ -74,15 +78,21 @@ public class DataDomainRecipeRepositoryTest {
         DataRecipe dataRecipe2 = Generator.generateDomainRecipe();
         DataRecipe dataRecipe3 = Generator.generateDomainRecipe();
 
-        when(localDataSource.getSavedRecipes())
-                .thenReturn(Observable.just(dataRecipe1, dataRecipe2, dataRecipe3));
+        List<DataRecipe> dataRecipes = new ArrayList<>();
+        dataRecipes.add(dataRecipe1);
+        dataRecipes.add(dataRecipe2);
+        dataRecipes.add(dataRecipe3);
 
-        TestObserver<DomainRecipe> testObserver = recipeRepository.getSavedRecipes().test();
+        when(localDataSource.getSavedRecipes()).thenReturn(Observable.just(dataRecipes));
 
-        testObserver.assertValues(
-                mapper.mapTo(dataRecipe1),
-                mapper.mapTo(dataRecipe2),
-                mapper.mapTo(dataRecipe3)
+        TestObserver<List<DomainRecipe>> testObserver = recipeRepository.getSavedRecipes().test();
+
+        testObserver.assertValue(
+                Arrays.asList(
+                        mapper.mapTo(dataRecipe1),
+                        mapper.mapTo(dataRecipe2),
+                        mapper.mapTo(dataRecipe3)
+                )
         );
 
         verify(localDataSource, times(1)).getSavedRecipes();

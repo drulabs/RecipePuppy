@@ -18,6 +18,7 @@ import org.drulabs.presentation.factory.HomeVMFactory;
 import org.drulabs.presentation.viewmodels.HomeVM;
 import org.drulabs.recipepuppy.R;
 import org.drulabs.recipepuppy.ui.common.RecipeListAdapter;
+import org.drulabs.recipepuppy.ui.favorites.FavoritesActivity;
 
 import javax.inject.Inject;
 
@@ -118,7 +119,9 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favorite_recipes:
-                // TODO open the favorites page
+                Intent favoritesIntent = new Intent(this, FavoritesActivity.class);
+                favoritesIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(favoritesIntent);
                 break;
             case R.id.action_about_recipe_puppy:
                 final String recipePuppyURL = "http://www.recipepuppy.com/";
@@ -212,7 +215,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         rvRecipeList.setAlpha(0.3f);
         progressBar.setVisibility(View.GONE);
         if (throwable != null) {
-            tvError.setText(getString(R.string.something_went_wrong));
+            tvError.setText(String.format("%s - %s", getString(R.string.something_went_wrong),
+                    throwable.getMessage()));
         } else {
             tvError.setText(getString(R.string.txt_no_data));
         }

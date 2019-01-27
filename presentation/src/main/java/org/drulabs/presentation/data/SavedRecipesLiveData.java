@@ -58,19 +58,17 @@ public class SavedRecipesLiveData extends LiveData<Model<List<PresentationRecipe
     }
 
 
-    private class SavedRecipesObserver extends DisposableObserver<DomainRecipe> {
-
-        private List<PresentationRecipe> presentationRecipes;
-
-        SavedRecipesObserver() {
-            presentationRecipes = new ArrayList<>();
-        }
+    private class SavedRecipesObserver extends DisposableObserver<List<DomainRecipe>> {
 
         @Override
-        public void onNext(DomainRecipe domainRecipe) {
-            PresentationRecipe presentationRecipe = mapper.mapFrom(domainRecipe);
-            presentationRecipe.setFavorite(true);
-            presentationRecipes.add(presentationRecipe);
+        public void onNext(List<DomainRecipe> domainRecipes) {
+            List<PresentationRecipe> presentationRecipes = new ArrayList<>();
+            for (DomainRecipe domainRecipe : domainRecipes) {
+                PresentationRecipe presentationRecipe = mapper.mapFrom(domainRecipe);
+                presentationRecipe.setFavorite(true);
+                presentationRecipes.add(presentationRecipe);
+            }
+            postValue(Model.success(presentationRecipes));
         }
 
         @Override
@@ -80,7 +78,7 @@ public class SavedRecipesLiveData extends LiveData<Model<List<PresentationRecipe
 
         @Override
         public void onComplete() {
-            postValue(Model.success(presentationRecipes));
+            System.out.println("SavedRecipesObserver: complete");
         }
     }
 }

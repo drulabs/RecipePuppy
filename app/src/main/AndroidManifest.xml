@@ -16,6 +16,10 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".ui.favorites.FavoritesActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.home.HomeActivity" />
+        <activity
             android:name=".ui.home.HomeActivity"
             android:launchMode="singleTop">
             <intent-filter>
@@ -24,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="android.app.searchable"
             android:resource="@xml/searchable" />

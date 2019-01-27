@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import org.drulabs.recipepuppy.ui.home.HomeActivity;
+import org.drulabs.recipepuppy.ui.favorites.FavoritesActivity;
 
 import dagger.Binds;
 import dagger.Module;
@@ -18,21 +19,6 @@ abstract class AppModule {
     @ContributesAndroidInjector
     abstract HomeActivity contributesMainActivity();
 
-//    private Application application;
-//
-//    public AppModule(Application application) {
-//        this.application = application;
-//    }
-//
-//    @Provides
-//    @Singleton
-//    public Application getApplication() {
-//        return application;
-//    }
-
-//    @Provides
-//    @Singleton
-//    public Context getApplicationContext() {
-//        return application.getApplicationContext();
-//    }
+    @ContributesAndroidInjector
+    abstract FavoritesActivity contributesFavoritesActivity();
 }

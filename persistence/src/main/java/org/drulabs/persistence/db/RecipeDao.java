@@ -8,14 +8,17 @@ import androidx.room.Query;
 
 import org.drulabs.persistence.entities.DBRecipe;
 
+import java.util.List;
+
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 @Dao
 public interface RecipeDao {
 
     @Query("SELECT * FROM saved_recipes")
-    Flowable<DBRecipe> getSavedRecipes();
+    Observable<List<DBRecipe>> getSavedRecipes();
 
     @Query("SELECT * FROM saved_recipes WHERE recipe_name =:name")
     Single<DBRecipe> lookupRecipe(String name);

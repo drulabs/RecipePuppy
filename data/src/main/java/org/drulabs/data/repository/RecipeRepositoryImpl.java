@@ -5,6 +5,9 @@ import org.drulabs.data.mapper.DataMapper;
 import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.repository.RecipeRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
@@ -47,9 +50,14 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     @Override
-    public Observable<DomainRecipe> getSavedRecipes() {
-        return localDataSource.getSavedRecipes()
-                .map(domainRecipe -> mapper.mapTo(domainRecipe));
+    public Observable<List<DomainRecipe>> getSavedRecipes() {
+        return localDataSource.getSavedRecipes().map(dataRecipes -> {
+            List<DomainRecipe> domainRecipes = new ArrayList<>();
+            for (DataRecipe dataRecipe : dataRecipes) {
+                domainRecipes.add(mapper.mapTo(dataRecipe));
+            }
+            return domainRecipes;
+        });
     }
 
     @Override

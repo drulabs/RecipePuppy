@@ -25,6 +25,7 @@ public class HomeVM extends ViewModel {
 
     private PresentationMapper<DomainRecipe> mapper;
 
+    private GetRecipesTask getRecipesTask;
     private SaveRecipeTask saveRecipeTask;
     private DeleteRecipeTask deleteRecipeTask;
 
@@ -33,6 +34,7 @@ public class HomeVM extends ViewModel {
                   SaveRecipeTask saveRecipeTask,
                   DeleteRecipeTask deleteRecipeTask) {
         this.mapper = mapper;
+        this.getRecipesTask = getRecipesTask;
         this.saveRecipeTask = saveRecipeTask;
         this.deleteRecipeTask = deleteRecipeTask;
 
@@ -63,6 +65,7 @@ public class HomeVM extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
+        getRecipesTask.dispose();
         saveRecipeTask.dispose();
         deleteRecipeTask.dispose();
     }

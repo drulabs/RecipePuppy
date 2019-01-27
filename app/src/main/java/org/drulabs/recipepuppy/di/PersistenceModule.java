@@ -10,6 +10,8 @@ import org.drulabs.persistence.mapper.PersistenceDataMapper;
 import org.drulabs.persistence.mapper.PersistenceMapper;
 import org.drulabs.persistence.source.LocalDataSourceImpl;
 
+import javax.inject.Singleton;
+
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
@@ -27,11 +29,13 @@ class PersistenceModule {
     }
 
     @Provides
+    @Singleton
     RecipeDatabase providesRecipeDatabase(Application application) {
         return RecipeDatabase.getInstance(application.getApplicationContext());
     }
 
     @Provides
+    @Singleton
     RecipeDao providesRecipeDAO(RecipeDatabase database) {
         return database.getRecipeDao();
     }

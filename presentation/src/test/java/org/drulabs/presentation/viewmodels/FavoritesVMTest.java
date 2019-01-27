@@ -24,6 +24,8 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.observers.DisposableCompletableObserver;
@@ -57,7 +59,7 @@ public class FavoritesVMTest {
     private ArgumentCaptor<DisposableSingleObserver<DomainRecipe>> singleCaptor;
 
     @Captor
-    private ArgumentCaptor<DisposableObserver<DomainRecipe>> observableCaptor;
+    private ArgumentCaptor<DisposableObserver<List<DomainRecipe>>> observableCaptor;
 
     @Captor
     private ArgumentCaptor<DisposableCompletableObserver> completableCaptor;
@@ -78,7 +80,7 @@ public class FavoritesVMTest {
         savedRecipes.observeForever(Generator.generateMockObserver());
 
         verify(getSavedRecipesTask).run(observableCaptor.capture(), eq(null));
-        observableCaptor.getValue().onNext(domainRecipe);
+        observableCaptor.getValue().onNext(Collections.singletonList(domainRecipe));
         observableCaptor.getValue().onComplete();
 
         assertEquals(savedRecipes.getValue().getData().get(0), presentationRecipe);

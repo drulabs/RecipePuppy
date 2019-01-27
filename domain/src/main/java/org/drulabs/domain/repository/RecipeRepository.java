@@ -12,7 +12,7 @@ public interface RecipeRepository {
 
     Observable<DomainRecipe> getRecipes(String searchQuery, int pageNum);
 
-    Observable<DomainRecipe> getSavedRecipes();
+    Observable<List<DomainRecipe>> getSavedRecipes();
 
     Completable saveRecipe(DomainRecipe domainRecipe);
 

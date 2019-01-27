@@ -1,8 +1,5 @@
 package org.drulabs.presentation.viewmodels;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
-
 import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.usecases.DeleteAllRecipesTask;
 import org.drulabs.domain.usecases.DeleteRecipeTask;
@@ -17,11 +14,15 @@ import org.drulabs.presentation.mapper.PresentationMapper;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+
 public class FavoritesVM extends ViewModel {
 
     private SavedRecipesLiveData savedRecipes;
 
 
+    private GetSavedRecipesTask getSavedRecipesTask;
     private GetLastSavedRecipeTask getLastSavedRecipeTask;
     private DeleteAllRecipesTask deleteAllRecipesTask;
     private DeleteRecipeTask deleteRecipeTask;
@@ -34,6 +35,7 @@ public class FavoritesVM extends ViewModel {
                        DeleteAllRecipesTask deleteAllRecipesTask,
                        DeleteRecipeTask deleteRecipeTask) {
         this.mapper = mapper;
+        this.getSavedRecipesTask = getSavedRecipesTask;
         this.getLastSavedRecipeTask = getLastSavedRecipeTask;
         this.deleteAllRecipesTask = deleteAllRecipesTask;
         this.deleteRecipeTask = deleteRecipeTask;
@@ -55,5 +57,14 @@ public class FavoritesVM extends ViewModel {
 
     public LiveData<Boolean> deleteRecipeFromFavorite(PresentationRecipe presentationRecipe) {
         return (new CompletableLiveData<>(deleteRecipeTask, mapper.mapTo(presentationRecipe)));
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        getSavedRecipesTask.dispose();
+        deleteAllRecipesTask.dispose();
+        deleteRecipeTask.dispose();
+        getLastSavedRecipeTask.dispose();
     }
 }
