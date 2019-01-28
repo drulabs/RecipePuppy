@@ -117,11 +117,17 @@ public class FavoritesActivity extends AppCompatActivity implements RecipeListAd
     private void showLastSavedRecipeInfo() {
         favoritesVM.getLastSavedRecipe().observe(this, model -> {
             if (model != null && model.getData() != null) {
-                PresentationRecipe lastRecipe = model.getData();
-                Intent openUrlIntent = new Intent(Intent.ACTION_VIEW);
-                openUrlIntent.setData(Uri.parse(lastRecipe.getDetailsUrl()));
-                startActivity(openUrlIntent);
+                if (model.getData() != null) {
+                    PresentationRecipe lastRecipe = model.getData();
+                    Intent openUrlIntent = new Intent(Intent.ACTION_VIEW);
+                    openUrlIntent.setData(Uri.parse(lastRecipe.getDetailsUrl()));
+                    startActivity(openUrlIntent);
+                } else {
+                    Toast.makeText(this, getString(R.string.txt_no_data_found),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
+            favoritesVM.getLastSavedRecipe().removeObservers(FavoritesActivity.this);
         });
     }
 

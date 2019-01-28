@@ -15,4 +15,5 @@
     <string name="txt_delete_all_favorites">Remove all</string>
     <string name="txt_show_last_removed">Show Last Recipe</string>
     <string name="txt_msg_successful">Operation successful</string>
+    <string name="txt_no_data_found">Nothing to display</string>
 </resources>
