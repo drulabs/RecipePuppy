@@ -1,6 +1,6 @@
 package org.drulabs.persistence.converters;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 import java.util.Arrays;
 import java.util.Collections;

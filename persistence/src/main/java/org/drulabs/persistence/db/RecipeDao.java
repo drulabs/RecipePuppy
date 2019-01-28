@@ -1,21 +1,24 @@
 package org.drulabs.persistence.db;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 
 import org.drulabs.persistence.entities.DBRecipe;
 
+import java.util.List;
+
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 @Dao
 public interface RecipeDao {
 
     @Query("SELECT * FROM saved_recipes")
-    Flowable<DBRecipe> getSavedRecipes();
+    Observable<List<DBRecipe>> getSavedRecipes();
 
     @Query("SELECT * FROM saved_recipes WHERE recipe_name =:name")
     Single<DBRecipe> lookupRecipe(String name);

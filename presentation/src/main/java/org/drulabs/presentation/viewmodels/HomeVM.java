@@ -1,73 +1,72 @@
 package org.drulabs.presentation.viewmodels;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
-
 import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.entities.RecipeRequest;
 import org.drulabs.domain.usecases.DeleteRecipeTask;
 import org.drulabs.domain.usecases.GetRecipesTask;
-import org.drulabs.domain.usecases.LookupRecipeTask;
 import org.drulabs.domain.usecases.SaveRecipeTask;
+import org.drulabs.presentation.data.CompletableLiveData;
+import org.drulabs.presentation.data.Model;
+import org.drulabs.presentation.data.RecipesLiveData;
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.mapper.PresentationMapper;
-import org.drulabs.presentation.model.CompletableLiveData;
-import org.drulabs.presentation.model.Model;
-import org.drulabs.presentation.model.RecipeLiveData;
 
 import java.util.List;
 
-import javax.inject.Inject;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
 
-public class HomeVM extends BaseVM {
+public class HomeVM extends ViewModel {
 
+    private MutableLiveData<RecipeRequest> requestLiveData = new MutableLiveData<>();
     private LiveData<Model<List<PresentationRecipe>>> recipesLiveData;
 
     private PresentationMapper<DomainRecipe> mapper;
 
-    private MutableLiveData<RecipeRequest> recipeRequest = new MutableLiveData<>();
-
+    private GetRecipesTask getRecipesTask;
     private SaveRecipeTask saveRecipeTask;
     private DeleteRecipeTask deleteRecipeTask;
 
-    @Inject
     public HomeVM(PresentationMapper<DomainRecipe> mapper,
                   GetRecipesTask getRecipesTask,
                   SaveRecipeTask saveRecipeTask,
-                  DeleteRecipeTask deleteRecipeTask,
-                  LookupRecipeTask lookupRecipeTask) {
+                  DeleteRecipeTask deleteRecipeTask) {
         this.mapper = mapper;
+        this.getRecipesTask = getRecipesTask;
         this.saveRecipeTask = saveRecipeTask;
         this.deleteRecipeTask = deleteRecipeTask;
 
-        this.recipesLiveData = Transformations.switchMap(
-                recipeRequest, request -> new RecipeLiveData<>(getRecipesTask.run(request)
-                        .map(mapper::mapFrom)
-                        .zipWith(lookupRecipeTask.run(request.getSearchQuery())
-                                        .toObservable(),
-                                (presentationRecipe, domainRecipe) -> {
-                                    presentationRecipe.setFavorite(domainRecipe != null);
-                                    return presentationRecipe;
-                                })
-                )
-        );
+        this.recipesLiveData = Transformations.switchMap(requestLiveData, input -> {
+            RecipesLiveData liveData = new RecipesLiveData(mapper, getRecipesTask);
+            liveData.setRecipeRequest(input);
+            return liveData;
+        });
+    }
+
+    public void searchRecipes(String searchText, int pageNum) {
+        RecipeRequest request = new RecipeRequest(searchText, pageNum);
+        requestLiveData.setValue(request);
     }
 
     public LiveData<Model<List<PresentationRecipe>>> getRecipesLiveData() {
         return recipesLiveData;
     }
 
-    public void searchRecipes(String searchText, int pageNum) {
-        RecipeRequest request = new RecipeRequest(searchText, pageNum);
-        recipeRequest.postValue(request);
+    public LiveData<Boolean> saveRecipeAsFav(PresentationRecipe recipe) {
+        return (new CompletableLiveData<>(saveRecipeTask, mapper.mapTo(recipe)));
     }
 
-    public LiveData<Boolean> saveRecipeAsFavorite(PresentationRecipe presentationRecipe) {
-        return (new CompletableLiveData(saveRecipeTask.run(mapper.mapTo(presentationRecipe))));
+    public LiveData<Boolean> deleteRecipeFromFav(PresentationRecipe recipe) {
+        return (new CompletableLiveData<>(deleteRecipeTask, mapper.mapTo(recipe)));
     }
 
-    public LiveData<Boolean> deleteRecipeFromFavorite(PresentationRecipe presentationRecipe) {
-        return (new CompletableLiveData(deleteRecipeTask.run(mapper.mapTo(presentationRecipe))));
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        getRecipesTask.dispose();
+        saveRecipeTask.dispose();
+        deleteRecipeTask.dispose();
     }
 }

@@ -6,7 +6,14 @@ import org.drulabs.network.entities.NetworkRecipe;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class NetworkDataMapper implements NetworkMapper<DataRecipe> {
+
+    @Inject
+    public NetworkDataMapper() {
+    }
+
     @Override
     public NetworkRecipe mapFrom(DataRecipe recipe) {
         String strIngredients = recipe.getIngredients().toString().replace(", ", ",").replaceAll

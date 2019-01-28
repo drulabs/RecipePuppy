@@ -1,24 +1,30 @@
 package org.drulabs.data.repository;
 
+import org.drulabs.data.cache.InMemoryCache;
 import org.drulabs.data.entities.DataRecipe;
-import org.drulabs.data.mapper.DomainMapper;
+import org.drulabs.data.mapper.DataMapper;
 import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.repository.RecipeRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 public class RecipeRepositoryImpl implements RecipeRepository {
 
     private LocalDataSource localDataSource;
     private RemoteDataSource remoteDataSource;
-    private DomainMapper<DomainRecipe> mapper;
+    private DataMapper<DomainRecipe> mapper;
 
     @Inject
-    public RecipeRepositoryImpl(DomainMapper<DomainRecipe> mapper, LocalDataSource
+    public RecipeRepositoryImpl(DataMapper<DomainRecipe> mapper, LocalDataSource
             localDataSource, RemoteDataSource remoteDataSource) {
         this.mapper = mapper;
         this.localDataSource = localDataSource;
@@ -27,15 +33,47 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     @Override
     public Observable<DomainRecipe> getRecipes(String searchQuery, int pageNum) {
-        return remoteDataSource.getRecipes(searchQuery, pageNum)
-                .map(domainRecipe -> mapper.mapTo(domainRecipe));
+
+        Observable<DataRecipe> dataRecipeObservable;
+        List<DataRecipe> cachedRecipes = InMemoryCache.getData(searchQuery, pageNum);
+        if (cachedRecipes != null) {
+            System.out.println("Remote source NOT invoked");
+            dataRecipeObservable = Observable.fromIterable(cachedRecipes);
+        } else {
+            dataRecipeObservable = remoteDataSource.getRecipes(searchQuery, pageNum);
+        }
+
+        return dataRecipeObservable
+                .map(dataRecipe -> {
+                    if (cachedRecipes == null) {
+                        // Populate memory cache
+                        InMemoryCache.addDataRecipe(searchQuery, pageNum, dataRecipe);
+                    }
+                    return mapper.mapTo(dataRecipe);
+                }).flatMap((Function<DomainRecipe, ObservableSource<DomainRecipe>>)
+                        domainRecipe -> localDataSource.lookupRecipe(domainRecipe.getTitle())
+                                .map(dataRecipe -> {
+                                    if (dataRecipe != null) {
+                                        DomainRecipe recipe = mapper.mapTo(dataRecipe);
+                                        recipe.setStarred(true);
+                                        return recipe;
+                                    } else {
+                                        return domainRecipe;
+                                    }
+                                }).onErrorReturn(throwable -> domainRecipe)
+                                .toObservable());
 
     }
 
     @Override
-    public Observable<DomainRecipe> getSavedRecipes() {
-        return localDataSource.getSavedRecipes()
-                .map(domainRecipe -> mapper.mapTo(domainRecipe));
+    public Observable<List<DomainRecipe>> getSavedRecipes() {
+        return localDataSource.getSavedRecipes().map(dataRecipes -> {
+            List<DomainRecipe> domainRecipes = new ArrayList<>();
+            for (DataRecipe dataRecipe : dataRecipes) {
+                domainRecipes.add(mapper.mapTo(dataRecipe));
+            }
+            return domainRecipes;
+        });
     }
 
     @Override

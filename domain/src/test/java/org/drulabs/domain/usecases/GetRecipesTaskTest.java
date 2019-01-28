@@ -11,7 +11,10 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
+
 import io.reactivex.Observable;
+import io.reactivex.functions.Predicate;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -41,17 +44,16 @@ public class GetRecipesTaskTest {
         DomainRecipe domainRecipe1 = TestFactory.getRecipe();
         DomainRecipe domainRecipe2 = TestFactory.getRecipe();
         DomainRecipe domainRecipe3 = TestFactory.getRecipe();
-//        List<DomainRecipe> domainRecipes = new ArrayList<>();
-//        domainRecipes.add(domainRecipe1);
-//        domainRecipes.add(domainRecipe2);
-//        domainRecipes.add(domainRecipe3);
 
         when(repository.getRecipes(recipeRequest.getSearchQuery(), recipeRequest.getPageNum()))
                 .thenReturn(Observable.just(domainRecipe1, domainRecipe2, domainRecipe3));
 
-        TestObserver<DomainRecipe> observer = getRecipesTask.run(recipeRequest).test();
+        TestObserver<List<DomainRecipe>> observer = getRecipesTask.build(recipeRequest).test();
 
-        observer.assertValues(domainRecipe1, domainRecipe2, domainRecipe3);
+        observer.assertValue(domainRecipes ->
+                domainRecipes.contains(domainRecipe1)
+                        && domainRecipes.contains(domainRecipe2)
+                        && domainRecipes.contains(domainRecipe3));
     }
 
     @Test
@@ -66,7 +68,7 @@ public class GetRecipesTaskTest {
         when(repository.getRecipes(recipeRequest.getSearchQuery(), recipeRequest.getPageNum()))
                 .thenReturn(Observable.just(domainRecipe1, domainRecipe2, domainRecipe3));
 
-        TestObserver<DomainRecipe> observer = getRecipesTask.run(recipeRequest).test();
+        TestObserver<List<DomainRecipe>> observer = getRecipesTask.build(recipeRequest).test();
 
         verify(repository, times(1))
                 .getRecipes(recipeRequest.getSearchQuery(), recipeRequest.getPageNum());

@@ -10,11 +10,13 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
@@ -38,10 +40,15 @@ public class GetSavedRecipesTaskTest {
         DomainRecipe domainRecipe2 = TestFactory.getRecipe();
         DomainRecipe domainRecipe3 = TestFactory.getRecipe();
 
-        when(repository.getSavedRecipes()).thenReturn(Observable.just(domainRecipe1, domainRecipe2, domainRecipe3));
-        TestObserver<DomainRecipe> observer = getSavedRecipesTask.run(null).test();
+        List<DomainRecipe> domainRecipes = new ArrayList<>();
+        domainRecipes.add(domainRecipe1);
+        domainRecipes.add(domainRecipe2);
+        domainRecipes.add(domainRecipe3);
 
-        observer.assertValues(domainRecipe1, domainRecipe2, domainRecipe3);
+        when(repository.getSavedRecipes()).thenReturn(Observable.just(domainRecipes));
+        TestObserver<List<DomainRecipe>> observer = getSavedRecipesTask.build(null).test();
+
+        observer.assertValue(domainRecipes);
     }
 
 }

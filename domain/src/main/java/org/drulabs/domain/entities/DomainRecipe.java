@@ -8,6 +8,7 @@ public class DomainRecipe {
     private String href;
     private String ingredients;
     private String thumbnail;
+    private boolean starred;
 
     public DomainRecipe(String title, String href, String ingredients, String thumbnail) {
         this.title = title;
@@ -30,6 +31,14 @@ public class DomainRecipe {
 
     public String getThumbnail() {
         return thumbnail;
+    }
+
+    public boolean isStarred() {
+        return starred;
+    }
+
+    public void setStarred(boolean starred) {
+        this.starred = starred;
     }
 
     @Override

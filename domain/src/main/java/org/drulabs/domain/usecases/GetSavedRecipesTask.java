@@ -4,13 +4,15 @@ import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.repository.RecipeRepository;
 import org.drulabs.domain.usecases.base.ObservableUseCase;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 
-public class GetSavedRecipesTask extends ObservableUseCase<DomainRecipe, Void> {
+public class GetSavedRecipesTask extends ObservableUseCase<List<DomainRecipe>, Void> {
 
     private RecipeRepository repository;
 
@@ -22,7 +24,7 @@ public class GetSavedRecipesTask extends ObservableUseCase<DomainRecipe, Void> {
     }
 
     @Override
-    protected Observable<DomainRecipe> build(Void aVoid) {
+    protected Observable<List<DomainRecipe>> build(Void aVoid) {
         return repository.getSavedRecipes();
     }
 }

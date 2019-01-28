@@ -6,6 +6,9 @@ import org.drulabs.persistence.db.RecipeDao;
 import org.drulabs.persistence.entities.DBRecipe;
 import org.drulabs.persistence.mapper.PersistenceMapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
@@ -24,10 +27,14 @@ public class LocalDataSourceImpl implements LocalDataSource {
     }
 
     @Override
-    public Observable<DataRecipe> getSavedRecipes() {
-        return dao.getSavedRecipes()
-                .toObservable()
-                .map(recipe -> mapper.mapTo(recipe));
+    public Observable<List<DataRecipe>> getSavedRecipes() {
+        return dao.getSavedRecipes().map(dbRecipes -> {
+            List<DataRecipe> dataRecipes = new ArrayList<>();
+            for (DBRecipe dbRecipe : dbRecipes) {
+                dataRecipes.add(mapper.mapTo(dbRecipe));
+            }
+            return dataRecipes;
+        });
     }
 
     @Override

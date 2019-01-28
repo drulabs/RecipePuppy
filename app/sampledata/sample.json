@@ -1,0 +1,56 @@
+{
+  "title": "Recipe Puppy",
+  "version": 0.1,
+  "href": "http:\/\/www.recipepuppy.com\/",
+  "results": [{
+    "title": "Chicken Caesar Pasta Salad",
+    "href": "http:\/\/www.recipezaar.com\/Chicken-Caesar-Pasta-Salad-195066",
+    "ingredients": "caesar salad dressing, chicken broth, pasta, croutons, green onion, italian cheese blend, parmesan cheese, red pepper, chicken",
+    "thumbnail": ""
+  }, {
+    "title": "Chicken Pesto Pasta Salad",
+    "href": "http:\/\/www.recipezaar.com\/Chicken-Pesto-Pasta-Salad-300402",
+    "ingredients": "pesto, cherry tomato, chicken, black pepper, olive oil, pasta, salt, white wine vinegar",
+    "thumbnail": ""
+  }, {
+    "title": "Cold Thai Pasta Salad",
+    "href": "http:\/\/www.recipezaar.com\/Cold-Thai-Pasta-Salad-258948",
+    "ingredients": "bean sprouts, shrimp, cucumber, coriander, mint, green onion, linguine, red pepper",
+    "thumbnail": "http:\/\/img.recipepuppy.com\/320315.jpg"
+  }, {
+    "title": "Creamy Pasta With Chicken, Broccoli and Basil - Low Fat Version",
+    "href": "http:\/\/www.recipezaar.com\/Creamy-Pasta-With-Chicken-Broccoli-and-Basil-Low-Fat-Version-321548",
+    "ingredients": "evaporated milk, flour, broccoli, butter, chicken broth, chicken, tomato, dry pasta, basil, garlic, red pepper flakes, parmesan cheese, salt",
+    "thumbnail": "http:\/\/img.recipepuppy.com\/335449.jpg"
+  }, {
+    "title": "Creamy Spinach and Mushroom Penne Pasta",
+    "href": "http:\/\/www.recipezaar.com\/Creamy-Spinach-and-Mushroom-Penne-Pasta-227463",
+    "ingredients": "portabella mushrooms, tomato, basil, oregano, fennel seed, spinach, garlic, black pepper, cream cheese, olive oil, parmesan cheese, penne, red onions, red pepper flakes, salt, seasoning, tomato sauce",
+    "thumbnail": "http:\/\/img.recipepuppy.com\/335994.jpg"
+  }, {
+    "title": "Creamy Vegetable Pasta",
+    "href": "http:\/\/www.recipezaar.com\/Creamy-Vegetable-Pasta-206389",
+    "ingredients": "crabmeat, mushroom, garlic, cream cheese, olive oil, oregano, parmesan cheese, black pepper, red pepper, salt, skim milk, pasta (in general), zucchini",
+    "thumbnail": ""
+  }, {
+    "title": "Carrabba's Cavatappi Amatriciana (Side Dish Pasta)",
+    "href": "http:\/\/www.recipezaar.com\/Carrabbas-Cavatappi-Amatriciana-Side-Dish-Pasta-351808",
+    "ingredients": "cavatappi pasta, tomato, white wine, garlic, olive oil, onions, pancetta, romano cheese, red pepper flakes, salt",
+    "thumbnail": ""
+  }, {
+    "title": "Simple And Easy Pasta Dough Recipe",
+    "href": "http:\/\/www.grouprecipes.com\/95155\/simple-and-easy-pasta-dough.html",
+    "ingredients": "semolina flour, eggs, olive oil, salt",
+    "thumbnail": ""
+  }, {
+    "title": "Fagiole Pasta (Not Pasta Fagiole Soup)",
+    "href": "http:\/\/www.recipezaar.com\/fagiole-pasta-not-pasta-fagiole-soup-358673",
+    "ingredients": "chicken broth, pasta, olive oil, garlic, tomato sauce, white beans, onions",
+    "thumbnail": ""
+  }, {
+    "title": "Spinach and Ricotta Cheese Sauce for Pasta",
+    "href": "http:\/\/www.recipezaar.com\/Spinach-and-Ricotta-Cheese-Sauce-for-Pasta-96927",
+    "ingredients": "black pepper, spinach, thyme, garlic, nutmeg, olive oil, onions, pine nuts, ricotta cheese, salt, vegetable broth",
+    "thumbnail": "http:\/\/img.recipepuppy.com\/617624.jpg"
+  }]
+}

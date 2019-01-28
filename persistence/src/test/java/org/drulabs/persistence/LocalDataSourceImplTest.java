@@ -15,7 +15,9 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import io.reactivex.BackpressureStrategy;
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
@@ -43,14 +45,14 @@ public class LocalDataSourceImplTest {
     public void testGetSavedRecipes() {
         DBRecipe dbRecipe = Generator.generateRecipe("01");
         DataRecipe dataRecipe = mapper.mapTo(dbRecipe);
+        List<DBRecipe> dbRecipes = new ArrayList<>();
+        dbRecipes.add(dbRecipe);
+        when(dao.getSavedRecipes()).thenReturn(Observable.just(dbRecipes));
 
-        when(dao.getSavedRecipes()).thenReturn(Observable.just(dbRecipe).toFlowable(BackpressureStrategy
-                .BUFFER));
-
-        TestObserver<DataRecipe> testObserver = localDataSource.getSavedRecipes().test();
+        TestObserver<List<DataRecipe>> testObserver = localDataSource.getSavedRecipes().test();
         testObserver.assertValue(
-                recipe -> recipe.getName().equalsIgnoreCase(dataRecipe.getName())
-                        && recipe.getDetailsUrl().equalsIgnoreCase(dataRecipe.getDetailsUrl())
+                recipes -> recipes.get(0).getName().equalsIgnoreCase(dataRecipe.getName())
+                        && recipes.get(0).getDetailsUrl().equalsIgnoreCase(dataRecipe.getDetailsUrl())
         );
 
         verify(dao, times(1)).getSavedRecipes();

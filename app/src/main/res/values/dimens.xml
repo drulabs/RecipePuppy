@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    // Margin related
+    <dimen name="margin_medium">8dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_large">12dp</dimen>
+    <dimen name="margin_huge">24dp</dimen>
+
+    // Text related
+    <dimen name="txt_x_large">36sp</dimen>
+    <dimen name="txt_large">30sp</dimen>
+    <dimen name="txt_regular">20sp</dimen>
+    <dimen name="txt_medium">16sp</dimen>
+    <dimen name="txt_small">14sp</dimen>
+    <dimen name="txt_remote_regular">24sp</dimen>
+    <dimen name="txt_remote_small">20sp</dimen>
+
+    // Box
+    <dimen name="box_medium">60dp</dimen>
+    <dimen name="box_small">40dp</dimen>
+    <dimen name="box_big">120dp</dimen>
+
+    // others
+    <dimen name="elevation_app_bar">4dp</dimen>
+
+</resources>

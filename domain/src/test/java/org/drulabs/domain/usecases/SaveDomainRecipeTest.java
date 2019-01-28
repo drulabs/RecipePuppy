@@ -36,21 +36,8 @@ public class SaveDomainRecipeTest {
     @Test
     public void testProjectSavedUseCase() {
         when(repository.saveRecipe(any())).thenReturn(Completable.complete());
-        TestObserver observer = saveRecipeTask.run(TestFactory.getRecipe()).test();
+        TestObserver observer = saveRecipeTask.build(TestFactory.getRecipe()).test();
         observer.assertComplete();
-    }
-
-    @Test
-    public void testListJoin() {
-        List<String> ingre = new ArrayList<>();
-        ingre.add("A");
-        ingre.add("B");
-        ingre.add("C");
-        ingre.add("D");
-
-        String j = ingre.toString().replace(", ", ",").replaceAll("[\\[.\\]]", "");
-
-        assertEquals(j, "A,B,C,D");
     }
 
 }
