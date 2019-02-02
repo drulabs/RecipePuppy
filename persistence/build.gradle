@@ -1,13 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.appVersionCode
+        versionName rootProject.ext.appVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -32,16 +31,16 @@ dependencies {
 
     implementation project(':data')
 
-    implementation "io.reactivex.rxjava2:rxjava:2.2.0"
-    implementation 'androidx.room:room-runtime:2.0.0-beta01'
-    implementation 'androidx.room:room-rxjava2:2.0.0-beta01'
-    annotationProcessor 'androidx.room:room-compiler:2.0.0-beta01'
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-rxjava2:$roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$roomVersion"
 
-    implementation "javax.inject:javax.inject:1"
+    implementation "javax.inject:javax.inject:$javaxInjectVersion"
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation "org.mockito:mockito-core:2.22.0"
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
-    androidTestImplementation 'androidx.arch.core:core-testing:2.0.0-beta01'
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$archCoreVersion"
 }
