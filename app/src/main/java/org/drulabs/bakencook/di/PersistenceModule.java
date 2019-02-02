@@ -1,4 +1,4 @@
-package org.drulabs.recipepuppy.di;
+package org.drulabs.bakencook.di;
 
 import android.app.Application;
 

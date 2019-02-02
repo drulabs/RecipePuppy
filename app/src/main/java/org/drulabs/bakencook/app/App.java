@@ -1,7 +1,7 @@
-package org.drulabs.recipepuppy.app;
+package org.drulabs.bakencook.app;
 
 
-import org.drulabs.recipepuppy.di.DaggerAppComponent;
+import org.drulabs.bakencook.di.DaggerAppComponent;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;

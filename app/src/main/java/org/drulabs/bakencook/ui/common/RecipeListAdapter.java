@@ -1,4 +1,4 @@
-package org.drulabs.recipepuppy.ui.common;
+package org.drulabs.bakencook.ui.common;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +10,8 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import org.drulabs.presentation.entities.PresentationRecipe;
-import org.drulabs.recipepuppy.R;
-import org.drulabs.recipepuppy.utils.GlideApp;
+import org.drulabs.bakencook.R;
+import org.drulabs.bakencook.utils.GlideApp;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
-package org.drulabs.recipepuppy.di;
+package org.drulabs.bakencook.di;
 
 import android.app.Application;
 
-import org.drulabs.recipepuppy.app.App;
+import org.drulabs.bakencook.app.App;
 
 import javax.inject.Singleton;
 

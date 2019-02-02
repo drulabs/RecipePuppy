@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Recipe Puppy</string>
+    <string name="app_name" formatted="false">Bake \'n Cook</string>
     <string name="search_title">Search</string>
     <string name="about_recipe_puppy">About Recipe Puppy</string>
     <string name="search_hint">Search by name</string>

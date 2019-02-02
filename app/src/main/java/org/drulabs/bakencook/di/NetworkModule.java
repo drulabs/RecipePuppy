@@ -1,4 +1,4 @@
-package org.drulabs.recipepuppy.di;
+package org.drulabs.bakencook.di;
 
 import org.drulabs.data.entities.DataRecipe;
 import org.drulabs.data.repository.RemoteDataSource;

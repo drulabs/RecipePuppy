@@ -1,4 +1,4 @@
-package org.drulabs.recipepuppy;
+package org.drulabs.bakencook;
 
 import org.junit.Test;
 

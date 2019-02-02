@@ -1,4 +1,4 @@
-package org.drulabs.recipepuppy.ui.home;
+package org.drulabs.bakencook.ui.home;
 
 
 import android.app.SearchManager;
@@ -11,14 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import org.drulabs.bakencook.R;
+import org.drulabs.bakencook.ui.common.RecipeListAdapter;
+import org.drulabs.bakencook.ui.favorites.FavoritesActivity;
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.factory.HomeVMFactory;
 import org.drulabs.presentation.viewmodels.HomeVM;
-import org.drulabs.recipepuppy.R;
-import org.drulabs.recipepuppy.ui.common.RecipeListAdapter;
-import org.drulabs.recipepuppy.ui.favorites.FavoritesActivity;
 
 import javax.inject.Inject;
 
@@ -35,10 +34,6 @@ import dagger.android.AndroidInjection;
 public class HomeActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,
         View.OnClickListener, RecipeListAdapter.ItemClickListener {
 
-    private static final String TAG = "HomeActivity";
-    private static final String DEFAULT_SEARCH_TERM = "parmesan";
-    private static final int DEFAULT_PAGE_NUM = 1;
-
     @Inject
     HomeVMFactory vmFactory;
 
@@ -48,9 +43,6 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     RecipeListAdapter recipeAdapter;
     ProgressBar progressBar;
     TextView tvSearchText, tvError;
-
-    String searchQuery = DEFAULT_SEARCH_TERM;
-    int currentPageNumber = DEFAULT_PAGE_NUM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +84,13 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         });
 
-        search(DEFAULT_SEARCH_TERM, DEFAULT_PAGE_NUM);
+        homeVM.getRecipeRequestLiveData().observe(this,
+                request -> tvSearchText.setText(
+                        String.format(getString(R.string.query_text_format),
+                                request.getSearchQuery(),
+                                request.getPageNum())));
+
+        homeVM.reload();
 
         handleIntent(getIntent());
     }
@@ -124,7 +122,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 startActivity(favoritesIntent);
                 break;
             case R.id.action_about_recipe_puppy:
-                final String recipePuppyURL = "http://www.recipepuppy.com/";
+                final String recipePuppyURL = "http://www.bakencook.com/";
                 Intent openUrlIntent = new Intent(Intent.ACTION_VIEW);
                 openUrlIntent.setData(Uri.parse(recipePuppyURL));
                 startActivity(openUrlIntent);
@@ -136,7 +134,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            search(query, DEFAULT_PAGE_NUM);
+            search(query);
         }
     }
 
@@ -144,14 +142,10 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_previous:
-                if (currentPageNumber > DEFAULT_PAGE_NUM) {
-                    currentPageNumber--;
-                    search(searchQuery, currentPageNumber);
-                }
+                homeVM.navigateToPreviousPage();
                 break;
             case R.id.tv_next:
-                currentPageNumber++;
-                search(searchQuery, currentPageNumber);
+                homeVM.navigateToNextPage();
                 break;
             default:
                 break;
@@ -160,9 +154,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        searchQuery = query;
-        currentPageNumber = DEFAULT_PAGE_NUM;
-        search(query, currentPageNumber);
+        search(query);
         return false;
     }
 
@@ -190,13 +182,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         showLoader();
         status.observe(this, operationStatus -> {
             hideLoader();
-            if (operationStatus) {
-                search(searchQuery, currentPageNumber);
-            } else {
-                Toast.makeText(this, getString(R.string.something_went_wrong),
-                        Toast.LENGTH_SHORT).show();
-            }
             status.removeObservers(HomeActivity.this);
+            homeVM.reload();
         });
     }
 
@@ -224,8 +211,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         tvError.setVisibility(View.VISIBLE);
     }
 
-    private void search(String text, int page) {
-        homeVM.searchRecipes(text, page);
-        tvSearchText.setText(String.format(getString(R.string.query_text_format), text, page));
+    private void search(String text) {
+        homeVM.searchRecipes(text);
     }
 }

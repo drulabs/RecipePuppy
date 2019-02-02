@@ -20,6 +20,11 @@ import androidx.lifecycle.ViewModel;
 
 public class HomeVM extends ViewModel {
 
+    private static final int DEFAULT_PAGE_NUM = 1;
+    private static final String DEFAULT_SEARCH_TERM = "parmesan";
+
+    private RecipeRequest currentRequest = new RecipeRequest(DEFAULT_SEARCH_TERM, DEFAULT_PAGE_NUM);
+
     private MutableLiveData<RecipeRequest> requestLiveData = new MutableLiveData<>();
     private LiveData<Model<List<PresentationRecipe>>> recipesLiveData;
 
@@ -45,9 +50,32 @@ public class HomeVM extends ViewModel {
         });
     }
 
-    public void searchRecipes(String searchText, int pageNum) {
-        RecipeRequest request = new RecipeRequest(searchText, pageNum);
-        requestLiveData.setValue(request);
+    public void searchRecipes(String searchText) {
+        currentRequest = new RecipeRequest(searchText, DEFAULT_PAGE_NUM);
+        requestLiveData.setValue(currentRequest);
+    }
+
+    private void searchRecipes(String searchText, int pageNum) {
+        currentRequest = new RecipeRequest(searchText, pageNum);
+        requestLiveData.setValue(currentRequest);
+    }
+
+    public void navigateToNextPage() {
+        searchRecipes(currentRequest.getSearchQuery(), currentRequest.getPageNum() + 1);
+    }
+
+    public void reload() {
+        requestLiveData.setValue(currentRequest);
+    }
+
+    public void navigateToPreviousPage() {
+        if (currentRequest.getPageNum() > 1) {
+            searchRecipes(currentRequest.getSearchQuery(), currentRequest.getPageNum() - 1);
+        }
+    }
+
+    public LiveData<RecipeRequest> getRecipeRequestLiveData() {
+        return requestLiveData;
     }
 
     public LiveData<Model<List<PresentationRecipe>>> getRecipesLiveData() {

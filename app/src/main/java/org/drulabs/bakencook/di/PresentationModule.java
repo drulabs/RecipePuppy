@@ -1,4 +1,4 @@
-package org.drulabs.recipepuppy.di;
+package org.drulabs.bakencook.di;
 
 import org.drulabs.domain.entities.DomainRecipe;
 import org.drulabs.domain.usecases.DeleteAllRecipesTask;

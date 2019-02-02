@@ -1,4 +1,4 @@
-package org.drulabs.recipepuppy.di;
+package org.drulabs.bakencook.di;
 
 import org.drulabs.data.mapper.DataDomainMapper;
 import org.drulabs.data.mapper.DataMapper;

@@ -1,4 +1,4 @@
-package org.drulabs.recipepuppy;
+package org.drulabs.bakencook;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("org.drulabs.recipepuppy", appContext.getPackageName());
+        assertEquals("org.drulabs.bakencook", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package org.drulabs.recipepuppy.ui.favorites;
+package org.drulabs.bakencook.ui.favorites;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,8 +13,8 @@ import android.widget.Toast;
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.factory.FavoritesVMFactory;
 import org.drulabs.presentation.viewmodels.FavoritesVM;
-import org.drulabs.recipepuppy.R;
-import org.drulabs.recipepuppy.ui.common.RecipeListAdapter;
+import org.drulabs.bakencook.R;
+import org.drulabs.bakencook.ui.common.RecipeListAdapter;
 
 import javax.inject.Inject;
 
@@ -105,7 +105,7 @@ public class FavoritesActivity extends AppCompatActivity implements RecipeListAd
                 showLastSavedRecipeInfo();
                 break;
             case R.id.action_about_recipe_puppy:
-                final String recipePuppyURL = "http://www.recipepuppy.com/";
+                final String recipePuppyURL = "http://www.bakencook.com/";
                 Intent openUrlIntent = new Intent(Intent.ACTION_VIEW);
                 openUrlIntent.setData(Uri.parse(recipePuppyURL));
                 startActivity(openUrlIntent);
