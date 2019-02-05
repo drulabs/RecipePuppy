@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.drulabs.bakencook.BuildConfig;
 import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.factory.FavoritesVMFactory;
 import org.drulabs.presentation.viewmodels.FavoritesVM;
@@ -105,9 +106,8 @@ public class FavoritesActivity extends AppCompatActivity implements RecipeListAd
                 showLastSavedRecipeInfo();
                 break;
             case R.id.action_about_recipe_puppy:
-                final String recipePuppyURL = "http://www.bakencook.com/";
                 Intent openUrlIntent = new Intent(Intent.ACTION_VIEW);
-                openUrlIntent.setData(Uri.parse(recipePuppyURL));
+                openUrlIntent.setData(Uri.parse(BuildConfig.API_HOME));
                 startActivity(openUrlIntent);
                 break;
         }

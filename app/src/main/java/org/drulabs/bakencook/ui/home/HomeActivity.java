@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.drulabs.bakencook.BuildConfig;
 import org.drulabs.bakencook.R;
 import org.drulabs.bakencook.ui.common.RecipeListAdapter;
 import org.drulabs.bakencook.ui.favorites.FavoritesActivity;
@@ -122,9 +123,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 startActivity(favoritesIntent);
                 break;
             case R.id.action_about_recipe_puppy:
-                final String recipePuppyURL = "http://www.bakencook.com/";
                 Intent openUrlIntent = new Intent(Intent.ACTION_VIEW);
-                openUrlIntent.setData(Uri.parse(recipePuppyURL));
+                openUrlIntent.setData(Uri.parse(BuildConfig.API_HOME));
                 startActivity(openUrlIntent);
                 break;
         }

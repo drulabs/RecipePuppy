@@ -1,5 +1,6 @@
 package org.drulabs.bakencook.di;
 
+import org.drulabs.bakencook.BuildConfig;
 import org.drulabs.data.entities.DataRecipe;
 import org.drulabs.data.repository.RemoteDataSource;
 import org.drulabs.network.api.RecipeService;
@@ -36,7 +37,7 @@ class NetworkModule {
         return new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(RecipeService.BASE_URL)
+                .baseUrl(BuildConfig.BASE_URL)
                 .build();
     }
 
