@@ -1,10 +1,6 @@
 package org.drulabs.persistence;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.room.Room;
 import android.content.Context;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
 
 import org.drulabs.persistence.db.RecipeDao;
 import org.drulabs.persistence.db.RecipeDatabase;
@@ -16,10 +12,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.reactivex.observers.TestObserver;
-import io.reactivex.subscribers.TestSubscriber;
+import java.util.List;
 
-@RunWith(AndroidJUnit4.class)
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.room.Room;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
+import io.reactivex.observers.TestObserver;
+
+@RunWith(AndroidJUnit4ClassRunner.class)
 public class LocalDataSourceTest {
 
     private RecipeDatabase recipeDatabase;
@@ -44,27 +45,73 @@ public class LocalDataSourceTest {
 
     @Test
     public void recipeReadWriteTest() {
-        DBRecipe dbRecipe = Generator.generateRecipe("myRecipe");
+        DBRecipe dbRecipe1 = Generator.generateRecipe("111");
+        DBRecipe dbRecipe2 = Generator.generateRecipe("222");
+        DBRecipe dbRecipe3 = Generator.generateRecipe("333");
 
-        dao.saveRecipe(dbRecipe);
+        dao.saveRecipe(dbRecipe1, dbRecipe2, dbRecipe3);
 
-        TestSubscriber<DBRecipe> testSubscriber = dao.getSavedRecipes().test();
+        TestObserver<List<DBRecipe>> testObserver = dao.getSavedRecipes().test();
 
-        testSubscriber.assertValue(
-                recipe -> recipe.getRecipeName().equals(dbRecipe.getRecipeName())
-                        && recipe.getCreateTime() == dbRecipe.getCreateTime()
-        );
+        testObserver.assertValue(dbRecipes -> dbRecipes.contains(dbRecipe1) &&
+                dbRecipes.contains(dbRecipe2) &&
+                dbRecipes.contains(dbRecipe3));
+        testObserver.assertNotComplete();
     }
 
     @Test
-    public void lookupRecipeTest() {
-        DBRecipe dbRecipe = Generator.generateRecipe("111");
+    public void success_lookupRecipeTest() {
+        DBRecipe dbRecipe1 = Generator.generateRecipe("111");
+        DBRecipe dbRecipe2 = Generator.generateRecipe("222");
+        DBRecipe dbRecipe3 = Generator.generateRecipe("333");
 
-        dao.saveRecipe(dbRecipe);
+        dao.saveRecipe(dbRecipe1, dbRecipe2, dbRecipe3);
 
-        TestObserver<DBRecipe> testObserver = dao.lookupRecipe("Test111").test();
+        TestObserver<DBRecipe> testObserver = dao.lookupRecipe("Test222").test();
 
-        testObserver.assertValue(dbRecipe);
+        testObserver.assertValue(dbRecipe -> dbRecipe.equals(dbRecipe2));
+    }
+
+    @Test
+    public void failure_lookupRecipeTest() {
+        DBRecipe dbRecipe1 = Generator.generateRecipe("111");
+        DBRecipe dbRecipe2 = Generator.generateRecipe("222");
+        DBRecipe dbRecipe3 = Generator.generateRecipe("333");
+
+        dao.saveRecipe(dbRecipe1, dbRecipe2, dbRecipe3);
+
+        TestObserver<DBRecipe> testObserver = dao.lookupRecipe("Test000").test();
+
+        testObserver.assertNoValues();
+    }
+
+    @Test
+    public void success_lastSavedRecipeTest() {
+        DBRecipe dbRecipe1 = Generator.generateRecipe("111", 111);
+        DBRecipe dbRecipe2 = Generator.generateRecipe("222", 222);
+        DBRecipe dbRecipe3 = Generator.generateRecipe("333", 333);
+
+        dao.saveRecipe(dbRecipe1, dbRecipe2, dbRecipe3);
+
+        TestObserver<DBRecipe> testObserver = dao.getLastSavedRecipe().test();
+
+        testObserver.assertValue(dbRecipe -> {
+            System.out.println(dbRecipe);
+            return dbRecipe.equals(dbRecipe3);
+        });
+    }
+
+    @Test
+    public void failure_lastSavedRecipeTest() {
+        DBRecipe dbRecipe1 = Generator.generateRecipe("111", 111);
+        DBRecipe dbRecipe2 = Generator.generateRecipe("222", 222);
+        DBRecipe dbRecipe3 = Generator.generateRecipe("333", 333);
+
+        dao.saveRecipe(dbRecipe1, dbRecipe2, dbRecipe3);
+
+        TestObserver<DBRecipe> testObserver = dao.getLastSavedRecipe().test();
+
+        testObserver.assertValue(dbRecipe -> !dbRecipe.equals(dbRecipe1));
     }
 
 }
