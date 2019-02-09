@@ -73,8 +73,10 @@ public class HomeVMTest {
         recipes.observeForever(Generator.generateMockObserver());
         homeVM.searchRecipes(request.getSearchQuery());
 
-        assertTrue(recipes.getValue().getData().contains(presentationRecipe1));
-        assertTrue(recipes.getValue().getData().contains(presentationRecipe2));
+        assertTrue(
+                recipes.getValue().getData().contains(presentationRecipe1) &&
+                        recipes.getValue().getData().contains(presentationRecipe2)
+        );
     }
 
     @Test
