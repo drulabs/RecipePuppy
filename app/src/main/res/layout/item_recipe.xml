@@ -26,8 +26,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_tile" />
-
+        app:srcCompat="@drawable/logo_tile"
+        tools:src="@sample/sample.json/results/href" />
 
     <TextView
         android:id="@+id/tvRecipeName"
@@ -44,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_recipe"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Garlic Pesto Pasta" />
+        tools:text="@sample/sample.json/results/title" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/ingredients_chips_group"
@@ -62,6 +62,12 @@
         app:layout_constraintStart_toEndOf="@+id/img_recipe"
         app:layout_constraintTop_toBottomOf="@+id/tvRecipeName">
 
+        <!--This is only for design time and will be removed at run time-->
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@sample/sample.json/results/ingredients" />
+
     </com.google.android.material.chip.ChipGroup>
 
     <ImageView
@@ -70,10 +76,10 @@
         android:layout_height="48dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
+        android:contentDescription="@string/txt_star"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/txt_star"
         app:srcCompat="@drawable/ic_star_white_mono" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

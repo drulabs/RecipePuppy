@@ -23,6 +23,7 @@ import org.drulabs.presentation.viewmodels.HomeVM;
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -35,6 +36,7 @@ import dagger.android.AndroidInjection;
 public class HomeActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,
         View.OnClickListener, RecipeListAdapter.ItemClickListener {
 
+    @VisibleForTesting
     @Inject
     HomeVMFactory vmFactory;
 

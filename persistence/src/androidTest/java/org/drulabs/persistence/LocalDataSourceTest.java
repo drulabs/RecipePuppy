@@ -16,8 +16,9 @@ import java.util.List;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.room.Room;
-import androidx.test.InstrumentationRegistry;
+
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
+import androidx.test.platform.app.InstrumentationRegistry;
 import io.reactivex.observers.TestObserver;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
@@ -31,7 +32,7 @@ public class LocalDataSourceTest {
 
     @Before
     public void setup() {
-        Context context = InstrumentationRegistry.getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         recipeDatabase = Room.inMemoryDatabaseBuilder(context, RecipeDatabase.class)
                 .allowMainThreadQueries()
                 .build();
