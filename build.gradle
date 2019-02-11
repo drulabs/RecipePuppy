@@ -25,3 +25,16 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+task allTests(dependsOn: [
+        ':app:test',
+        ':data:test',
+        ':domain:test',
+        ':network:test',
+        ':persistence:test',
+        ':presentation:test']) {
+    description = "Run all tests"
+    finalizedBy 'mergeAndroidReports'
+}
+
+apply plugin: 'android-reporting'
