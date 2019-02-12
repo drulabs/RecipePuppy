@@ -1,4 +1,4 @@
-package org.drulabs.presentation.viewmodels;
+package org.drulabs.presentation;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
@@ -14,6 +14,7 @@ import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.mapper.PresentationDomainMapper;
 import org.drulabs.presentation.mapper.PresentationMapper;
 import org.drulabs.presentation.utils.Generator;
+import org.drulabs.presentation.viewmodels.FavoritesVM;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
