@@ -1,6 +1,7 @@
 package org.drulabs.bakencook.di;
 
 import org.drulabs.bakencook.BuildConfig;
+import org.drulabs.bakencook.utils.FakeRecipeRetrofitService;
 import org.drulabs.data.entities.DataRecipe;
 import org.drulabs.data.repository.RemoteDataSource;
 import org.drulabs.network.api.RecipeService;
@@ -29,7 +30,7 @@ class NetworkModule {
 
     @Provides
     RecipeService providesRecipeService(Retrofit retrofit) {
-        return retrofit.create(RecipeService.class);
+        return new FakeRecipeRetrofitService(); //retrofit.create(RecipeService.class);
     }
 
     @Provides

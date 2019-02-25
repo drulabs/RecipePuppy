@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.drulabs.bakencook.BuildConfig;
 import org.drulabs.bakencook.R;
 import org.drulabs.bakencook.ui.common.RecipeListAdapter;
 import org.drulabs.bakencook.ui.favorites.FavoritesActivity;
@@ -19,9 +20,12 @@ import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.factory.HomeVMFactory;
 import org.drulabs.presentation.viewmodels.HomeVM;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -34,6 +38,7 @@ import dagger.android.AndroidInjection;
 public class HomeActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,
         View.OnClickListener, RecipeListAdapter.ItemClickListener {
 
+    @VisibleForTesting
     @Inject
     HomeVMFactory vmFactory;
 
@@ -108,7 +113,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(Objects.requireNonNull(searchManager)
+                .getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(this);
         return true;
     }
@@ -122,9 +128,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 startActivity(favoritesIntent);
                 break;
             case R.id.action_about_recipe_puppy:
-                final String recipePuppyURL = "http://www.bakencook.com/";
                 Intent openUrlIntent = new Intent(Intent.ACTION_VIEW);
-                openUrlIntent.setData(Uri.parse(recipePuppyURL));
+                openUrlIntent.setData(Uri.parse(BuildConfig.API_HOME));
                 startActivity(openUrlIntent);
                 break;
         }
