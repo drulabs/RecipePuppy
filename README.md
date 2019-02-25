@@ -49,3 +49,5 @@ Having separate modules is not necessary, you can create all the laters in the a
 ## Data Source
 
 I have used the [recipe-puppy API](http://www.recipepuppy.com/about/api) to search for recipes and display it in the UI.
+
+## Other details coming soon
