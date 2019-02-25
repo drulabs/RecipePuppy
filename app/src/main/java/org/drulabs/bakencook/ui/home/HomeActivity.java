@@ -20,6 +20,8 @@ import org.drulabs.presentation.entities.PresentationRecipe;
 import org.drulabs.presentation.factory.HomeVMFactory;
 import org.drulabs.presentation.viewmodels.HomeVM;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
@@ -111,7 +113,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(Objects.requireNonNull(searchManager)
+                .getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(this);
         return true;
     }
