@@ -1,10 +1,14 @@
 # Recipes - CLEAN Architecture in Android
 
+| Plugin | Status |
+|--------|--------|
+| Circle CI | [![CircleCI](https://circleci.com/gh/drulabs/RecipePuppy/tree/master.svg?style=shield&circle-token=44c7523e8b3194049edc7d69833d0a4648a5445c)](https://circleci.com/gh/drulabs/RecipePuppy/tree/master) |
+| CodeCov | --- |
+
+
 [Slides](https://slides.com/drulabs/recipes-clean-android/#/)
 
-Build: [![CircleCI](https://circleci.com/gh/drulabs/RecipePuppy/tree/master.svg?style=shield&circle-token=44c7523e8b3194049edc7d69833d0a4648a5445c)](https://circleci.com/gh/drulabs/RecipePuppy/tree/master)
-
-This project (a relatively simple one) is an attempt to adapt CLEAN architecture in Android. It showcases usage of Android Architecture Components with RxJava and Dagger2 together to achieve the CLEAN architecture. Please note, this is an adaptation of the original idea presented by Rober C. Martin in his [blog](http://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and book ["Clean Architecture: A Craftsman's Guide to Software Structure and Design"](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164), the core principles are intact but other rules are modified to showcase working or RxJava, dagger2 and Room with RxJava and LiveData. 
+This project (a relatively simple one) is an attempt to adapt CLEAN architecture in Android. It showcases usage of Android Architecture Components with RxJava and Dagger2 together to achieve the CLEAN architecture. Please note, this is an adaptation of the original idea presented by Rober C. Martin in his [blog](http://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and book ["Clean Architecture: A Craftsman's Guide to Software Structure and Design"](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164), the core principles are intact but other rules are modified to showcase working of RxJava, dagger2 and Room with RxJava and LiveData. 
 
 ## About the app
 
@@ -36,7 +40,7 @@ Having separate modules is not necessary, you can create all the laters in the a
 - **RxJava**:for scheduling, mapping, transformation and data transfers. Also used with Room and Retrofit
 - **Room**: for locally persisting favourited recipes
 - **Retrofit**: Netwoking library
-- **ViewModel**: For persisteing data across device configuration changes
+- **ViewModel**: For persisting data across configuration changes
 - **Expresso, Mockito, Junit** - For testing
 - **Glide** - for Image loading
 
