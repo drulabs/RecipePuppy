@@ -23,9 +23,15 @@ jobs:
     - run:
         name: Run Tests
         command: ./gradlew lint test
+    - run:
+        name: Create APK
+        command: ./gradlew :app:assembleDebug
     - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
         path: app/build/reports
         destination: reports
+    - store_artifacts: # collect apk
+        path: app/build/outputs/apk/debug
+        destination: debug-apk
     - store_artifacts:
         path: data/build/reports
         destination: data-reports
