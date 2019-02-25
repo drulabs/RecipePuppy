@@ -3,7 +3,8 @@
 | Usability | Status |
 |--------|--------|
 | Circle CI | [![CircleCI](https://circleci.com/gh/drulabs/RecipePuppy/tree/master.svg?style=shield&circle-token=44c7523e8b3194049edc7d69833d0a4648a5445c)](https://circleci.com/gh/drulabs/RecipePuppy/tree/master) |
-| Licence | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) |
+| Licence | [![License: MIT](https://img.shields.io/github/license/drulabs/RecipePuppy.svg)](https://opensource.org/licenses/MIT) |
+| Usage | [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/) |
 
 
 [Slides](https://slides.com/drulabs/recipes-clean-android/#/)
